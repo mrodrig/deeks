@@ -1,14 +1,14 @@
 {
-  "name": "deep-keys",
+  "name": "deepkey",
   "version": "0.0.1",
   "description": "Retrieve all keys and nested keys from objects and arrays of objects.",
-  "main": "src/deep-keys.js",
+  "main": "src/deepkey.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mrodrig/deep-keys.git"
+    "url": "git+https://github.com/mrodrig/deepkey.git"
   },
   "keywords": [
     "keys",
@@ -18,9 +18,9 @@
   "author": "mrodrig",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mrodrig/deep-keys/issues"
+    "url": "https://github.com/mrodrig/deepkey/issues"
   },
-  "homepage": "https://github.com/mrodrig/deep-keys#readme",
+  "homepage": "https://github.com/mrodrig/deepkey#readme",
   "dependencies": {
     "underscore": "1.9.1"
   }
