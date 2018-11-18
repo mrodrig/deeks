@@ -3,6 +3,7 @@
 [![Dependencies](https://img.shields.io/david/mrodrig/deeks.svg?style=flat-square)](https://www.npmjs.org/package/deeks)
 [![Downloads](http://img.shields.io/npm/dm/deeks.svg)](https://www.npmjs.org/package/deeks)
 [![NPM version](https://img.shields.io/npm/v/deeks.svg)](https://www.npmjs.org/package/deeks)
+[![Maintainability](https://api.codeclimate.com/v1/badges/830bc7f29f61466986ac/maintainability)](https://codeclimate.com/github/mrodrig/deeks/maintainability)
 
 **Retrieve all keys and nested keys from objects and arrays of objects.**
 
