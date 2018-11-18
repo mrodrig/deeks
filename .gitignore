@@ -2,3 +2,4 @@ package-lock.js
 .idea
 *.iml
 node_modules
+coverage
