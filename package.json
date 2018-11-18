@@ -1,26 +1,28 @@
 {
-  "name": "deepkey",
+  "name": "deeks",
   "version": "0.0.1",
   "description": "Retrieve all keys and nested keys from objects and arrays of objects.",
-  "main": "src/deepkey.js",
+  "main": "src/deeks.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mrodrig/deepkey.git"
+    "url": "git+https://github.com/mrodrig/deeks.git"
   },
   "keywords": [
     "keys",
     "object",
-    "deep"
+    "deep",
+    "deeks",
+    "recursive"
   ],
   "author": "mrodrig",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mrodrig/deepkey/issues"
+    "url": "https://github.com/mrodrig/deeks/issues"
   },
-  "homepage": "https://github.com/mrodrig/deepkey#readme",
+  "homepage": "https://github.com/mrodrig/deeks#readme",
   "dependencies": {
     "underscore": "1.9.1"
   }

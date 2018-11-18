@@ -5,11 +5,11 @@
 ## Installing
 
 ```bash
-npm install --save deepkey
+npm install --save deeks
 ```
 
 ```javascript
-let keys = require('deepkey');
+let keys = require('deeks');
 ```
 
 ## API
@@ -21,6 +21,11 @@ Coming soon!
 ### `keys.deepKeysFromList(array)`
 
 Coming soon!
+
+## Examples
+
+This module integrates really nicely with the `doc-path` module, which allows
+the programmatic getting and setting of key paths produced by this module.
 
 ## Tests
 
