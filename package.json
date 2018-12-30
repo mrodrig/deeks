@@ -5,7 +5,8 @@
   "main": "src/deeks.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha test/tests.js",
-    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec"
+    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- -R spec",
+    "lint": "./node_modules/.bin/eslint src test"
   },
   "repository": {
     "type": "git",
@@ -28,11 +29,12 @@
     "underscore": "1.9.1"
   },
   "devDependencies": {
-    "mocha": "5.2.0",
+    "eslint": "5.11.1",
     "istanbul": "0.4.5",
+    "mocha": "5.2.0",
     "should": "13.2.3"
   },
   "engines": {
-    "node" : ">=6.0"
+    "node": ">=6.0"
   }
 }

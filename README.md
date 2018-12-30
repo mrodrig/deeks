@@ -1,11 +1,15 @@
 # deeks - Deep Object Key Extraction
 
 [![Dependencies](https://img.shields.io/david/mrodrig/deeks.svg?style=flat-square)](https://www.npmjs.org/package/deeks)
-[![Build Status](https://travis-ci.org/mrodrig/deeks.svg?branch=master)](https://travis-ci.org/mrodrig/deeks)
 [![Downloads](http://img.shields.io/npm/dm/deeks.svg)](https://www.npmjs.org/package/deeks)
 [![NPM version](https://img.shields.io/npm/v/deeks.svg)](https://www.npmjs.org/package/deeks)
-[![Maintainability](https://api.codeclimate.com/v1/badges/830bc7f29f61466986ac/maintainability)](https://codeclimate.com/github/mrodrig/deeks/maintainability)
 [![Known Vulnerabilities](https://snyk.io/test/npm/deeks/badge.svg)](https://snyk.io/test/npm/deeks)
+[![Package Size](https://img.shields.io/bundlephobia/min/deeks.svg)](https://www.npmjs.org/package/deeks)
+
+[![Build Status](https://travis-ci.org/mrodrig/deeks.svg?branch=master)](https://travis-ci.org/mrodrig/deeks)
+[![Maintainability](https://api.codeclimate.com/v1/badges/830bc7f29f61466986ac/maintainability)](https://codeclimate.com/github/mrodrig/deeks/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/830bc7f29f61466986ac/test_coverage)](https://codeclimate.com/github/mrodrig/deeks/test_coverage)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=rodrigues.mi%40husky.neu.edu&item_name=Open+Source+Software+Development+-+Node+Modules&currency_code=USD&source=url)
 
 **Retrieve all keys and nested keys from objects and arrays of objects.**
 

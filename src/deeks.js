@@ -1,6 +1,6 @@
 'use strict';
 
-var _ = require('underscore');
+const _ = require('underscore');
 
 module.exports = {
     deepKeys: deepKeys,
@@ -12,7 +12,7 @@ module.exports = {
  * @param object
  * @returns {Array}
  */
-function deepKeys (object) {
+function deepKeys(object) {
     if (_.isObject(object)) {
         return generateDeepKeysList('', object);
     }
@@ -25,7 +25,7 @@ function deepKeys (object) {
  * @returns Array[Array[String]]
  */
 function deepKeysFromList(list) {
-    return list.map(function (document) { // for each document
+    return list.map((document) => { // for each document
         if (_.isObject(document)) {
             // if the data at the key is a document, then we retrieve the subHeading starting with an empty string heading and the doc
             return deepKeys(document);
@@ -34,10 +34,10 @@ function deepKeysFromList(list) {
     });
 }
 
-var generateDeepKeysList = function(heading, data) {
-    var keys = Object.keys(data).map(function (currentKey) {
+function generateDeepKeysList(heading, data) {
+    let keys = Object.keys(data).map((currentKey) => {
         // If the given heading is empty, then we set the heading to be the subKey, otherwise set it as a nested heading w/ a dot
-        var keyName = buildKeyName(heading, currentKey);
+        let keyName = buildKeyName(heading, currentKey);
 
         // If we have another nested document, recur on the sub-document to retrieve the full key name
         if (isDocument(data[currentKey]) && Object.keys(data[currentKey]).length) {
@@ -48,7 +48,7 @@ var generateDeepKeysList = function(heading, data) {
     });
 
     return _.flatten(keys);
-};
+}
 
 /**
  * Function used to generate the key path

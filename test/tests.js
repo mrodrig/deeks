@@ -1,10 +1,12 @@
-const deeks = require('../src/deeks.js'),
+'use strict';
 
+const deeks = require('../src/deeks.js'),
+    /* eslint no-unused-vars: ["error", { "varsIgnorePattern": "should" }]*/
     should = require('should');
 
-describe('deeks Module', function() {
-    describe('Objects', function () {
-        it('should retrieve no keys for an empty object', function (done) {
+describe('deeks Module', () => {
+    describe('Objects', () => {
+        it('should retrieve no keys for an empty object', (done) => {
             let testObj = {},
                 keys = deeks.deepKeys(testObj);
 
@@ -13,7 +15,7 @@ describe('deeks Module', function() {
             done();
         });
 
-        it('should retrieve no keys for a non-object', function (done) {
+        it('should retrieve no keys for a non-object', (done) => {
             let testObj = 'testing',
                 keys = deeks.deepKeys(testObj);
 
@@ -22,7 +24,7 @@ describe('deeks Module', function() {
             done();
         });
 
-        it('should retrieve the keys for a single keyed object', function (done) {
+        it('should retrieve the keys for a single keyed object', (done) => {
             let testObj = { a: 1 },
                 keys = deeks.deepKeys(testObj);
 
@@ -32,7 +34,7 @@ describe('deeks Module', function() {
             done();
         });
 
-        it('should retrieve the keys for a multiple keyed object', function (done) {
+        it('should retrieve the keys for a multiple keyed object', (done) => {
             let testObj = {
                     a: 1,
                     b: 2
@@ -46,7 +48,7 @@ describe('deeks Module', function() {
             done();
         });
 
-        it('should retrieve the keys for a multi-level object', function (done) {
+        it('should retrieve the keys for a multi-level object', (done) => {
             let testObj = {
                     a: 1,
                     b: 2,
@@ -64,7 +66,7 @@ describe('deeks Module', function() {
             done();
         });
 
-        it('should retrieve the keys for a deep multi-level object', function (done) {
+        it('should retrieve the keys for a deep multi-level object', (done) => {
             let testObj = {
                     a: 1,
                     b: 2,
@@ -89,8 +91,8 @@ describe('deeks Module', function() {
         });
     });
 
-    describe('List of Objects', function () {
-        it('should retrieve no keys for an empty array', function (done) {
+    describe('List of Objects', () => {
+        it('should retrieve no keys for an empty array', (done) => {
             let testList = [],
                 keys = deeks.deepKeysFromList(testList);
 
@@ -99,7 +101,7 @@ describe('deeks Module', function() {
             done();
         });
 
-        it('should retrieve no keys for an array of a non-object', function (done) {
+        it('should retrieve no keys for an array of a non-object', (done) => {
             let testList = ['testing'],
                 keys = deeks.deepKeysFromList(testList);
 
@@ -109,7 +111,7 @@ describe('deeks Module', function() {
             done();
         });
 
-        it('should retrieve no keys for an array of one empty object', function (done) {
+        it('should retrieve no keys for an array of one empty object', (done) => {
             let testList = [{}],
                 keys = deeks.deepKeysFromList(testList);
 
@@ -119,7 +121,7 @@ describe('deeks Module', function() {
             done();
         });
 
-        it('should retrieve keys for an array of one object', function (done) {
+        it('should retrieve keys for an array of one object', (done) => {
             let testList = [
                     { a: 1 }
                 ],
@@ -131,7 +133,7 @@ describe('deeks Module', function() {
             done();
         });
 
-        it('should retrieve keys for an array of one object and no keys for a string', function (done) {
+        it('should retrieve keys for an array of one object and no keys for a string', (done) => {
             let testList = [
                     { a: 1 },
                     'testing'
@@ -145,7 +147,7 @@ describe('deeks Module', function() {
             done();
         });
 
-        it('should retrieve no keys for an array of one object with multiple single-level keys', function (done) {
+        it('should retrieve no keys for an array of one object with multiple single-level keys', (done) => {
             let testList = [
                     {
                         a: 1,
@@ -160,7 +162,7 @@ describe('deeks Module', function() {
             done();
         });
 
-        it('should retrieve no keys for an array of one object with multi-level keys', function (done) {
+        it('should retrieve no keys for an array of one object with multi-level keys', (done) => {
             let testList = [
                     {
                         a: 1,
@@ -179,7 +181,7 @@ describe('deeks Module', function() {
             done();
         });
 
-        it('should retrieve no keys for an array of one object with multi-level keys', function (done) {
+        it('should retrieve no keys for an array of one object with multi-level keys', (done) => {
             let testList = [
                     {
                         a: 1,
