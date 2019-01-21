@@ -89,6 +89,28 @@ describe('deeks Module', () => {
                 .and.have.lengthOf(3);
             done();
         });
+
+        it('should retrieve the keys for objects containing an array of sub-objects', (done) => {
+            let testObj = {
+                    make: 'Nissan',
+                    model: 'GT-R',
+                    trim: 'NISMO',
+                    specifications: [
+                        { mileage: 10 },
+                        { cylinders: '6' }
+                    ]
+                },
+                keys = deeks.deepKeys(testObj);
+
+            keys.should.be.an.instanceOf(Array)
+                .and.containEql('make')
+                .and.containEql('model')
+                .and.containEql('trim')
+                .and.containEql('specifications.mileage')
+                .and.containEql('specifications.cylinders')
+                .and.have.lengthOf(5);
+            done();
+        });
     });
 
     describe('List of Objects', () => {
@@ -206,6 +228,52 @@ describe('deeks Module', () => {
                 .and.containEql(['a', 'b.c.d'])
                 .and.containEql(['e', 'f.g.h'])
                 .and.have.lengthOf(2);
+            done();
+        });
+
+        it('should retrieve keys for an array of one object with array of objects', (done) => {
+            let testList = [
+                    {
+                        make: 'Nissan',
+                        model: 'GT-R',
+                        trim: 'NISMO',
+                        specifications: [
+                            { mileage: 10 },
+                            { cylinders: '6' }
+                        ]
+                    }
+                ],
+                keys = deeks.deepKeysFromList(testList);
+
+            keys.should.be.an.instanceOf(Array)
+                .and.containEql(['make', 'model', 'trim', 'specifications.mileage', 'specifications.cylinders'])
+                .and.have.lengthOf(1);
+            done();
+        });
+
+        it('should retrieve keys for an array of one object with array of multi-level objects, with a non-object', (done) => {
+            let testList = [
+                    {
+                        make: 'Nissan',
+                        model: 'GT-R',
+                        trim: 'NISMO',
+                        specifications: [
+                            {
+                                odometer: {
+                                    miles: 10,
+                                    km: 22
+                                }
+                            },
+                            { cylinders: '6' },
+                            5
+                        ]
+                    }
+                ],
+                keys = deeks.deepKeysFromList(testList);
+
+            keys.should.be.an.instanceOf(Array)
+                .and.containEql(['make', 'model', 'trim', 'specifications.odometer.miles', 'specifications.odometer.km', 'specifications.cylinders'])
+                .and.have.lengthOf(1);
             done();
         });
     });

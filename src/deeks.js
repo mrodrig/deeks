@@ -40,8 +40,12 @@ function generateDeepKeysList(heading, data) {
         let keyName = buildKeyName(heading, currentKey);
 
         // If we have another nested document, recur on the sub-document to retrieve the full key name
-        if (isDocument(data[currentKey]) && Object.keys(data[currentKey]).length) {
+        if (isDocumentToRecurOn(data[currentKey])) {
             return generateDeepKeysList(keyName, data[currentKey]);
+        } else if (isArrayToRecurOn(data[currentKey])) {
+            // If we have a nested array that we need to recur on
+            return _.flatten(deepKeysFromList(data[currentKey]))
+                .map((subKey) => buildKeyName(keyName, subKey));
         }
         // Otherwise return this key name since we don't have a sub document
         return keyName;
@@ -64,10 +68,19 @@ function buildKeyName(upperKeyName, currentKeyName) {
 }
 
 /**
- * Returns whether this value is a JS document or not
+ * Returns whether this value is a document to recur on or not
  * @param val Any item whose type will be evaluated
  * @returns {boolean}
  */
-function isDocument(val) {
-    return _.isObject(val) && !_.isNull(val) && !_.isArray(val);
+function isDocumentToRecurOn(val) {
+    return _.isObject(val) && !_.isNull(val) && !_.isArray(val) && Object.keys(val).length;
+}
+
+/**
+ * Returns whether this value is an array to recur on or not
+ * @param val Any item whose type will be evaluated
+ * @returns {boolean}
+ */
+function isArrayToRecurOn(val) {
+    return _.isArray(val) && val.length;
 }
