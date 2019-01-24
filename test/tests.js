@@ -272,7 +272,28 @@ describe('deeks Module', () => {
                 keys = deeks.deepKeysFromList(testList);
 
             keys.should.be.an.instanceOf(Array)
-                .and.containEql(['make', 'model', 'trim', 'specifications.odometer.miles', 'specifications.odometer.km', 'specifications.cylinders'])
+                .and.containEql(['make', 'model', 'trim', 'specifications.odometer.miles', 'specifications.odometer.km', 'specifications.cylinders', 'specifications'])
+                .and.have.lengthOf(1);
+            done();
+        });
+
+        it('should return the key name for the field with an array value if it contains a non-document value', function (done) {
+            let testList = [
+                    {
+                        make: 'Nissan',
+                        model: 'GT-R',
+                        trim: 'NISMO',
+                        rebates: [
+                            500,
+                            500,
+                            1500
+                        ]
+                    }
+                ],
+                keys = deeks.deepKeysFromList(testList);
+
+            keys.should.be.an.instanceOf(Array)
+                .and.containEql(['make', 'model', 'trim', 'rebates'])
                 .and.have.lengthOf(1);
             done();
         });

@@ -44,14 +44,25 @@ function generateDeepKeysList(heading, data) {
             return generateDeepKeysList(keyName, data[currentKey]);
         } else if (isArrayToRecurOn(data[currentKey])) {
             // If we have a nested array that we need to recur on
-            return _.flatten(deepKeysFromList(data[currentKey]))
-                .map((subKey) => buildKeyName(keyName, subKey));
+            return processArrayKeys(data[currentKey], currentKey);
         }
         // Otherwise return this key name since we don't have a sub document
         return keyName;
     });
 
     return _.flatten(keys);
+}
+
+function processArrayKeys(subArray, currentKeyPath) {
+    let subArrayKeys = deepKeysFromList(subArray)
+        .map((schemaKeys) => {
+            if (isEmptyArray(schemaKeys)) {
+                return [currentKeyPath];
+            }
+            return schemaKeys.map((subKey) => buildKeyName(currentKeyPath, subKey));
+        });
+
+    return _.uniq(_.flatten(subArrayKeys));
 }
 
 /**
@@ -83,4 +94,13 @@ function isDocumentToRecurOn(val) {
  */
 function isArrayToRecurOn(val) {
     return _.isArray(val) && val.length;
+}
+
+/**
+ * Helper function that determines whether or not a value is an empty array
+ * @param val
+ * @returns {boolean}
+ */
+function isEmptyArray(val) {
+    return Array.isArray(val) && !val.length;
 }
