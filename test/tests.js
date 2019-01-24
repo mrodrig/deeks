@@ -277,7 +277,7 @@ describe('deeks Module', () => {
             done();
         });
 
-        it('should return the key name for the field with an array value if it contains a non-document value', function (done) {
+        it('should return the key name for the field with an array value if it contains a non-document value', (done) => {
             let testList = [
                     {
                         make: 'Nissan',
