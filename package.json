@@ -1,6 +1,6 @@
 {
   "name": "deeks",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Retrieve all keys and nested keys from objects and arrays of objects.",
   "main": "src/deeks.js",
   "scripts": {
