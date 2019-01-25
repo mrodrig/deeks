@@ -38,7 +38,7 @@ let generatedKeys = keys.deepKeys({
 generatedKeys.forEach((key) => 
     console.log(
         docPath.evaluatePath(key)
-	)
+    )
 )
 // Console Output:
 // Nissan
