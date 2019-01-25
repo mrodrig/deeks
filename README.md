@@ -21,30 +21,62 @@ npm install --save deeks
 
 Example: 
 ```javascript
-let keys = require('deeks');
+let keys = require('deeks'),
+	docPath = require('doc-path');
 
-keys.deepKeys({
+let generatedKeys = keys.deepKeys({
 	make: 'Nissan',
 	model: 'GT-R',
 	trim: 'NISMO',
-	specifications: {
-	    mileage: 10,
-	    cylinders: '6'
-	}
-})
+	specifications: [
+	    {mileage: 10},
+	    {cylinders: 6}
+	]
+}, {expandArrayObjects: true});
 // => ['make', 'model', 'trim', 'specifications.mileage', 'specifications.cylinders']
+
+generatedKeys.forEach((key) => 
+    console.log(
+        docPath.evaluatePath(key)
+	)
+)
+// Console Output:
+// Nissan
+// GT-R
+// NISMO
+// 10
+// 6
 ```
 
 ## API
 
 ### deepKeys(object) 
 
-`keys.deepKeys(object)`
+`keys.deepKeys(object, options)`
 
 Returns all keys in an object, even if they're nested several layers deep. 
 The array of keys that is returned can then be used with the 
 [`doc-path`](https://github.com/mrodrig/doc-path) module to get and set values 
 at a specific key path.
+
+Options (optional):
+- expandArrayObjects - `Boolean` (Default: `false`) - Should objects appearing in arrays in the provided 
+object also be expanded, such that keys appearing in those objects are extracted and 
+included in the returned key path list?
+	- Example:
+	```json
+	{
+		"make": "Nissan",
+		"model": "GT-R",
+		"trim": "NISMO",
+		"specifications": [
+			{"mileage": 10},
+			{"cylinders": 6}
+		]
+	}
+	```
+	- expandArrayObjects = `false` results in: `['make', 'model', 'trim', 'specifications']`
+	- expandArrayObjects = `true` results in: `['make', 'model', 'trim', 'specifications.mileage', 'specifications.cylinders']`
 
 Returns: `Array[String]`
 
@@ -57,6 +89,25 @@ Example: `['make', 'model', 'specifications.odometer.miles', 'specifications.odo
 Returns all keys in each object in the array, even if the keys are nested 
 several layers deep in each of the documents. These can also be used with the 
 [`doc-path`](https://github.com/mrodrig/doc-path) module.
+
+Options (optional):
+- expandArrayObjects - `Boolean` (Default: `false`) - Should objects appearing in arrays in the provided 
+object also be expanded, such that keys appearing in those objects are extracted and 
+included in the returned key path list?
+	- Example:
+	```json
+	{
+		"make": "Nissan",
+		"model": "GT-R",
+		"trim": "NISMO",
+		"specifications": [
+			{"mileage": 10},
+			{"cylinders": 6}
+		]
+	}
+	```
+	- expandArrayObjects = `false` results in: `['make', 'model', 'trim', 'specifications']`
+	- expandArrayObjects = `true` results in: `['make', 'model', 'trim', 'specifications.mileage', 'specifications.cylinders']`
 
 Returns: `Array[Array[String]]`
 

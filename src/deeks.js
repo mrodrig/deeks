@@ -12,9 +12,10 @@ module.exports = {
  * @param object
  * @returns {Array}
  */
-function deepKeys(object) {
+function deepKeys(object, options) {
+    options = mergeOptions(options);
     if (_.isObject(object)) {
-        return generateDeepKeysList('', object);
+        return generateDeepKeysList('', object, options);
     }
     return [];
 }
@@ -24,25 +25,26 @@ function deepKeys(object) {
  * @param list
  * @returns Array[Array[String]]
  */
-function deepKeysFromList(list) {
+function deepKeysFromList(list, options) {
+    options = mergeOptions(options);
     return list.map((document) => { // for each document
         if (_.isObject(document)) {
             // if the data at the key is a document, then we retrieve the subHeading starting with an empty string heading and the doc
-            return deepKeys(document);
+            return deepKeys(document, options);
         }
         return [];
     });
 }
 
-function generateDeepKeysList(heading, data) {
+function generateDeepKeysList(heading, data, options) {
     let keys = Object.keys(data).map((currentKey) => {
         // If the given heading is empty, then we set the heading to be the subKey, otherwise set it as a nested heading w/ a dot
         let keyName = buildKeyName(heading, currentKey);
 
         // If we have another nested document, recur on the sub-document to retrieve the full key name
         if (isDocumentToRecurOn(data[currentKey])) {
-            return generateDeepKeysList(keyName, data[currentKey]);
-        } else if (isArrayToRecurOn(data[currentKey])) {
+            return generateDeepKeysList(keyName, data[currentKey], options);
+        } else if (options.expandArrayObjects && isArrayToRecurOn(data[currentKey])) {
             // If we have a nested array that we need to recur on
             return processArrayKeys(data[currentKey], currentKey);
         }
@@ -103,4 +105,10 @@ function isArrayToRecurOn(val) {
  */
 function isEmptyArray(val) {
     return Array.isArray(val) && !val.length;
+}
+
+function mergeOptions(options) {
+    return _.defaults(options || {}, {
+        expandArrayObjects: false
+    });
 }
