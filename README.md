@@ -32,7 +32,10 @@ let generatedKeys = keys.deepKeys({
 	    {mileage: 10},
 	    {cylinders: 6}
 	]
-}, {expandArrayObjects: true});
+}, {
+    expandArrayObjects: true,
+    ignoreEmptyArraysWhenExpanding: true
+});
 // => ['make', 'model', 'trim', 'specifications.mileage', 'specifications.cylinders']
 
 generatedKeys.forEach((key) => 
@@ -77,6 +80,17 @@ included in the returned key path list?
 	```
 	- expandArrayObjects = `false` results in: `['make', 'model', 'trim', 'specifications']`
 	- expandArrayObjects = `true` results in: `['make', 'model', 'trim', 'specifications.mileage', 'specifications.cylinders']`
+- ignoreEmptyArraysWhenExpanding - `Boolean` (Default: `false`) - Should empty array keys be ignored when expanding array objects?
+	- Note: This only has an effect when used with `expandArrayObjects`.
+	- Example:
+	```json
+	{ 
+		"features": [ {"name": "A/C" }],
+		"rebates": []
+	}
+	```
+	- ignoreEmptyArraysWhenExpanding = `false` results in: `['features.name', 'rebates']`
+	- ignoreEmptyArraysWhenExpanding = `true` results in: `['features.name']`
 
 Returns: `Array[String]`
 
@@ -108,6 +122,17 @@ included in the returned key path list?
 	```
 	- expandArrayObjects = `false` results in: `['make', 'model', 'trim', 'specifications']`
 	- expandArrayObjects = `true` results in: `['make', 'model', 'trim', 'specifications.mileage', 'specifications.cylinders']`
+- ignoreEmptyArraysWhenExpanding - `Boolean` (Default: `false`) - Should empty array keys be ignored when expanding array objects?
+	- Note: This only has an effect when used with `expandArrayObjects`.
+	- Example:
+	```json
+	[
+		{ "features": [ {"name": "A/C" }] },
+		{ "features": [] }
+	] 
+	```
+	- ignoreEmptyArraysWhenExpanding = `false` results in: `['features.name', 'features']`
+	- ignoreEmptyArraysWhenExpanding = `true` results in: `['features.name']`
 
 Returns: `Array[Array[String]]`
 
@@ -158,8 +183,8 @@ $ npm run coverage
 
 Current Coverage is:
 ```
-Statements   : 100% ( 41/41 )
-Branches     : 100% ( 24/24 )
+Statements   : 100% ( 46/46 )
+Branches     : 100% ( 30/30 )
 Functions    : 100% ( 9/9 )
-Lines        : 100% ( 40/40 )
+Lines        : 100% ( 45/45 )
 ```
