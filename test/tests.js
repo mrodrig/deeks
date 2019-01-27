@@ -130,7 +130,8 @@ describe('deeks Module', () => {
                     .and.containEql('make')
                     .and.containEql('model')
                     .and.containEql('trim')
-                    .and.have.lengthOf(3);
+                    .and.containEql('specifications')
+                    .and.have.lengthOf(4);
                 done();
             });
 
@@ -204,6 +205,49 @@ describe('deeks Module', () => {
                     .and.containEql('specifications.cylinders')
                     .and.containEql('specifications')
                     .and.have.lengthOf(6);
+                done();
+            });
+
+            it('[expandArrayObjects, ignoreEmptyArraysWhenExpanding] should retrieve the keys for objects containing an empty array', (done) => {
+                let testObj = {
+                        make: 'Nissan',
+                        model: 'GT-R',
+                        trim: 'NISMO',
+                        specifications: []
+                    },
+                    options = {
+                        expandArrayObjects: true,
+                        ignoreEmptyArraysWhenExpanding: true
+                    },
+                    keys = deeks.deepKeys(testObj, options);
+
+                keys.should.be.an.instanceOf(Array)
+                    .and.containEql('make')
+                    .and.containEql('model')
+                    .and.containEql('trim')
+                    .and.have.lengthOf(3);
+                done();
+            });
+
+            it('[expandArrayObjects, ignoreEmptyArraysWhenExpanding] should retrieve the keys for objects containing an array of non-objects', (done) => {
+                let testObj = {
+                        make: 'Nissan',
+                        model: 'GT-R',
+                        trim: 'NISMO',
+                        features: ['Insane horsepower', 'Fast acceleration']
+                    },
+                    options = {
+                        expandArrayObjects: true,
+                        ignoreEmptyArraysWhenExpanding: true
+                    },
+                    keys = deeks.deepKeys(testObj, options);
+
+                keys.should.be.an.instanceOf(Array)
+                    .and.containEql('make')
+                    .and.containEql('model')
+                    .and.containEql('trim')
+                    .and.containEql('features')
+                    .and.have.lengthOf(4);
                 done();
             });
         });
@@ -412,7 +456,7 @@ describe('deeks Module', () => {
                     keys = deeks.deepKeysFromList(testList, options);
 
                 keys.should.be.an.instanceOf(Array)
-                    .and.containEql(['make', 'model', 'trim'])
+                    .and.containEql(['make', 'model', 'trim', 'specifications'])
                     .and.have.lengthOf(1);
                 done();
             });
@@ -485,6 +529,48 @@ describe('deeks Module', () => {
 
                 keys.should.be.an.instanceOf(Array)
                     .and.containEql(['make', 'model', 'trim', 'specifications.odometer.miles', 'specifications.odometer.km', 'specifications.cylinders', 'specifications'])
+                    .and.have.lengthOf(1);
+                done();
+            });
+
+            it('[expandArrayObjects, ignoreEmptyArraysWhenExpanding] should retrieve keys for an array of one object with an empty array', (done) => {
+                let testList = [
+                        {
+                            make: 'Nissan',
+                            model: 'GT-R',
+                            trim: 'NISMO',
+                            specifications: []
+                        }
+                    ],
+                    options = {
+                        expandArrayObjects: true,
+                        ignoreEmptyArraysWhenExpanding: true
+                    },
+                    keys = deeks.deepKeysFromList(testList, options);
+
+                keys.should.be.an.instanceOf(Array)
+                    .and.containEql(['make', 'model', 'trim'])
+                    .and.have.lengthOf(1);
+                done();
+            });
+
+            it('[expandArrayObjects, ignoreEmptyArraysWhenExpanding] should retrieve keys for an array of one object with an array of non-objects', (done) => {
+                let testList = [
+                        {
+                            make: 'Nissan',
+                            model: 'GT-R',
+                            trim: 'NISMO',
+                            features: ['Insane horsepower', 'Fast acceleration']
+                        }
+                    ],
+                    options = {
+                        expandArrayObjects: true,
+                        ignoreEmptyArraysWhenExpanding: true
+                    },
+                    keys = deeks.deepKeysFromList(testList, options);
+
+                keys.should.be.an.instanceOf(Array)
+                    .and.containEql(['make', 'model', 'trim', 'features'])
                     .and.have.lengthOf(1);
                 done();
             });

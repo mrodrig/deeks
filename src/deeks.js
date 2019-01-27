@@ -48,7 +48,7 @@ function generateDeepKeysList(heading, data, options) {
             return generateDeepKeysList(keyName, data[currentKey], options);
         } else if (options.expandArrayObjects && isArrayToRecurOn(data[currentKey])) {
             // If we have a nested array that we need to recur on
-            return processArrayKeys(data[currentKey], currentKey);
+            return processArrayKeys(data[currentKey], currentKey, options);
         }
         // Otherwise return this key name since we don't have a sub document
         return keyName;
@@ -62,13 +62,14 @@ function generateDeepKeysList(heading, data, options) {
  * option is specified.
  * @param subArray
  * @param currentKeyPath
+ * @param options
  * @returns {*}
  */
-function processArrayKeys(subArray, currentKeyPath) {
+function processArrayKeys(subArray, currentKeyPath, options) {
     let subArrayKeys = deepKeysFromList(subArray);
 
     if (!subArray.length) {
-        return [];
+        return options.ignoreEmptyArraysWhenExpanding ? [] : [currentKeyPath];
     } else if (subArray.length && _.flatten(subArrayKeys).length === 0) {
         // Has items in the array, but no objects
         return [currentKeyPath];
@@ -103,7 +104,7 @@ function buildKeyName(upperKeyName, currentKeyName) {
  * @returns {boolean}
  */
 function isDocumentToRecurOn(val) {
-    return _.isObject(val) && !_.isNull(val) && !_.isArray(val) && Object.keys(val).length;
+    return _.isObject(val) && !_.isNull(val) && !Array.isArray(val) && Object.keys(val).length;
 }
 
 /**
@@ -112,7 +113,7 @@ function isDocumentToRecurOn(val) {
  * @returns {boolean}
  */
 function isArrayToRecurOn(val) {
-    return _.isArray(val);
+    return Array.isArray(val);
 }
 
 /**
@@ -126,6 +127,7 @@ function isEmptyArray(val) {
 
 function mergeOptions(options) {
     return _.defaults(options || {}, {
-        expandArrayObjects: false
+        expandArrayObjects: false,
+        ignoreEmptyArraysWhenExpanding: false
     });
 }
