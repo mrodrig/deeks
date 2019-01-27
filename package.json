@@ -13,8 +13,10 @@
     "url": "git+https://github.com/mrodrig/deeks.git"
   },
   "keywords": [
+    "get",
     "keys",
     "object",
+    "document",
     "deep",
     "deeks",
     "recursive"

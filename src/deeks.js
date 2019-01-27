@@ -10,6 +10,7 @@ module.exports = {
 /**
  * Return the deep keys list for a single document
  * @param object
+ * @param options
  * @returns {Array}
  */
 function deepKeys(object, options) {
@@ -23,6 +24,7 @@ function deepKeys(object, options) {
 /**
  * Return the deep keys list for all documents in the provided list
  * @param list
+ * @param options
  * @returns Array[Array[String]]
  */
 function deepKeysFromList(list, options) {
@@ -55,16 +57,31 @@ function generateDeepKeysList(heading, data, options) {
     return _.flatten(keys);
 }
 
+/**
+ * Helper function to handle the processing of arrays when the expandArrayObjects
+ * option is specified.
+ * @param subArray
+ * @param currentKeyPath
+ * @returns {*}
+ */
 function processArrayKeys(subArray, currentKeyPath) {
-    let subArrayKeys = deepKeysFromList(subArray)
-        .map((schemaKeys) => {
+    let subArrayKeys = deepKeysFromList(subArray);
+
+    if (!subArray.length) {
+        return [];
+    } else if (subArray.length && _.flatten(subArrayKeys).length === 0) {
+        // Has items in the array, but no objects
+        return [currentKeyPath];
+    } else {
+        subArrayKeys = subArrayKeys.map((schemaKeys) => {
             if (isEmptyArray(schemaKeys)) {
                 return [currentKeyPath];
             }
             return schemaKeys.map((subKey) => buildKeyName(currentKeyPath, subKey));
         });
 
-    return _.uniq(_.flatten(subArrayKeys));
+        return _.uniq(_.flatten(subArrayKeys));
+    }
 }
 
 /**
@@ -95,7 +112,7 @@ function isDocumentToRecurOn(val) {
  * @returns {boolean}
  */
 function isArrayToRecurOn(val) {
-    return _.isArray(val) && val.length;
+    return _.isArray(val);
 }
 
 /**
