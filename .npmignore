@@ -7,4 +7,5 @@ node_modules/
 node_modules/*
 coverage/
 coverage/*
-.nyc-output
+.nyc_output
+.nyc_output/*
