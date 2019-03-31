@@ -1,6 +1,6 @@
 # deeks - Deep Object Key Extraction
 
-[![Dependencies](https://img.shields.io/david/mrodrig/deeks.svg?style=flat-square)](https://www.npmjs.org/package/deeks)
+[![Dependencies](https://img.shields.io/david/mrodrig/deeks.svg)](https://www.npmjs.org/package/deeks)
 [![Downloads](http://img.shields.io/npm/dm/deeks.svg)](https://www.npmjs.org/package/deeks)
 [![NPM version](https://img.shields.io/npm/v/deeks.svg)](https://www.npmjs.org/package/deeks)
 [![Known Vulnerabilities](https://snyk.io/test/npm/deeks/badge.svg)](https://snyk.io/test/npm/deeks)
