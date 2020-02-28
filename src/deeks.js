@@ -1,6 +1,6 @@
 'use strict';
 
-const _ = require('underscore');
+const utils = require('./utils.js');
 
 module.exports = {
     deepKeys: deepKeys,
@@ -15,7 +15,7 @@ module.exports = {
  */
 function deepKeys(object, options) {
     options = mergeOptions(options);
-    if (_.isObject(object)) {
+    if (utils.isObject(object)) {
         return generateDeepKeysList('', object, options);
     }
     return [];
@@ -30,7 +30,7 @@ function deepKeys(object, options) {
 function deepKeysFromList(list, options) {
     options = mergeOptions(options);
     return list.map((document) => { // for each document
-        if (_.isObject(document)) {
+        if (utils.isObject(document)) {
             // if the data at the key is a document, then we retrieve the subHeading starting with an empty string heading and the doc
             return deepKeys(document, options);
         }
@@ -54,7 +54,7 @@ function generateDeepKeysList(heading, data, options) {
         return keyName;
     });
 
-    return _.flatten(keys);
+    return utils.flatten(keys);
 }
 
 /**
@@ -70,7 +70,7 @@ function processArrayKeys(subArray, currentKeyPath, options) {
 
     if (!subArray.length) {
         return options.ignoreEmptyArraysWhenExpanding ? [] : [currentKeyPath];
-    } else if (subArray.length && _.flatten(subArrayKeys).length === 0) {
+    } else if (subArray.length && utils.flatten(subArrayKeys).length === 0) {
         // Has items in the array, but no objects
         return [currentKeyPath];
     } else {
@@ -81,7 +81,7 @@ function processArrayKeys(subArray, currentKeyPath, options) {
             return schemaKeys.map((subKey) => buildKeyName(currentKeyPath, subKey));
         });
 
-        return _.uniq(_.flatten(subArrayKeys));
+        return utils.unique(utils.flatten(subArrayKeys));
     }
 }
 
@@ -104,7 +104,7 @@ function buildKeyName(upperKeyName, currentKeyName) {
  * @returns {boolean}
  */
 function isDocumentToRecurOn(val) {
-    return _.isObject(val) && !_.isNull(val) && !Array.isArray(val) && Object.keys(val).length;
+    return utils.isObject(val) && !utils.isNull(val) && !Array.isArray(val) && Object.keys(val).length;
 }
 
 /**
@@ -126,8 +126,9 @@ function isEmptyArray(val) {
 }
 
 function mergeOptions(options) {
-    return _.defaults(options || {}, {
+    return {
         expandArrayObjects: false,
-        ignoreEmptyArraysWhenExpanding: false
-    });
+        ignoreEmptyArraysWhenExpanding: false,
+        ...options || {}
+    };
 }
