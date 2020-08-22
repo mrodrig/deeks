@@ -181,6 +181,33 @@ describe('deeks Module', () => {
                 done();
             });
 
+            it('[expandArrayObjects] should retrieve the keys for objects containing sub-objects with a multi-level array', (done) => {
+                let testObj = {
+                        make: 'Nissan',
+                        model: 'GT-R',
+                        trim: 'NISMO',
+                        specifications: {
+                            tierOne: [
+                                { mileage: 10 },
+                                { cylinders: '6' },
+                            ]
+                        }
+                    },
+                    options = {
+                        expandArrayObjects: true
+                    },
+                    keys = deeks.deepKeys(testObj, options);
+
+                keys.should.be.an.instanceOf(Array)
+                    .and.containEql('make')
+                    .and.containEql('model')
+                    .and.containEql('trim')
+                    .and.containEql('specifications.tierOne.mileage')
+                    .and.containEql('specifications.tierOne.cylinders')
+                    .and.have.lengthOf(5);
+                done();
+            });
+
             it('[expandArrayObjects] should retrieve the keys for objects containing an array of sub-objects and a non-object', (done) => {
                 let testObj = {
                         make: 'Nissan',
@@ -504,6 +531,38 @@ describe('deeks Module', () => {
                 done();
             });
 
+            it('[expandArrayObjects] should retrieve keys for an array of one object with sub-object containing an object of a multi-level array', (done) => {
+                let testList = [
+                        {
+                            make: 'Nissan',
+                            model: 'GT-R',
+                            trim: 'NISMO',
+                            specifications: {
+                                tierOne: [
+                                    {
+                                        odometer: {
+                                            miles: 10,
+                                            km: 22
+                                        }
+                                    },
+                                    {
+                                        cylinders: '6' 
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    options = {
+                        expandArrayObjects: true
+                    },
+                    keys = deeks.deepKeysFromList(testList, options);
+
+                keys.should.be.an.instanceOf(Array)
+                    .and.containEql(['make', 'model', 'trim', 'specifications.tierOne.odometer.miles', 'specifications.tierOne.odometer.km', 'specifications.tierOne.cylinders'])
+                    .and.have.lengthOf(1);
+                done();
+            });
+
             it('[expandArrayObjects] should retrieve keys for an array of one object with an array of multi-level objects and a non-object', (done) => {
                 let testList = [
                         {
@@ -532,6 +591,7 @@ describe('deeks Module', () => {
                     .and.have.lengthOf(1);
                 done();
             });
+
 
             it('[expandArrayObjects, ignoreEmptyArraysWhenExpanding] should retrieve keys for an array of one object with an empty array', (done) => {
                 let testList = [
