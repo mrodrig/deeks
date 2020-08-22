@@ -189,7 +189,7 @@ describe('deeks Module', () => {
                         specifications: {
                             tierOne: [
                                 { mileage: 10 },
-                                { cylinders: '6' },
+                                { cylinders: '6' }
                             ]
                         }
                     },
@@ -545,9 +545,7 @@ describe('deeks Module', () => {
                                             km: 22
                                         }
                                     },
-                                    {
-                                        cylinders: '6' 
-                                    }
+                                    { cylinders: '6' }
                                 ]
                             }
                         }
@@ -591,7 +589,6 @@ describe('deeks Module', () => {
                     .and.have.lengthOf(1);
                 done();
             });
-
 
             it('[expandArrayObjects, ignoreEmptyArraysWhenExpanding] should retrieve keys for an array of one object with an empty array', (done) => {
                 let testList = [
