@@ -48,7 +48,7 @@ function generateDeepKeysList(heading, data, options) {
             return generateDeepKeysList(keyName, data[currentKey], options);
         } else if (options.expandArrayObjects && isArrayToRecurOn(data[currentKey])) {
             // If we have a nested array that we need to recur on
-            return processArrayKeys(data[currentKey], currentKey, options);
+            return processArrayKeys(data[currentKey], keyName, options);
         }
         // Otherwise return this key name since we don't have a sub document
         return keyName;
