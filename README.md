@@ -3,13 +3,11 @@
 [![Dependencies](https://img.shields.io/david/mrodrig/deeks.svg)](https://www.npmjs.org/package/deeks)
 [![Downloads](http://img.shields.io/npm/dm/deeks.svg)](https://www.npmjs.org/package/deeks)
 [![NPM version](https://img.shields.io/npm/v/deeks.svg)](https://www.npmjs.org/package/deeks)
-[![Known Vulnerabilities](https://snyk.io/test/npm/deeks/badge.svg)](https://snyk.io/test/npm/deeks)
-[![Package Size](https://img.shields.io/bundlephobia/min/deeks.svg)](https://www.npmjs.org/package/deeks)
+[![Minzipped Size](https://flat.badgen.net/bundlephobia/minzip/deeks)](https://bundlephobia.com/result?p=deeks)
 
 [![Build Status](https://travis-ci.org/mrodrig/deeks.svg?branch=master)](https://travis-ci.org/mrodrig/deeks)
+[![Coverage Status](https://coveralls.io/repos/github/mrodrig/deeks/badge.svg?branch=stable)](https://coveralls.io/github/mrodrig/deeks?branch=stable)
 [![Maintainability](https://api.codeclimate.com/v1/badges/830bc7f29f61466986ac/maintainability)](https://codeclimate.com/github/mrodrig/deeks/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/830bc7f29f61466986ac/test_coverage)](https://codeclimate.com/github/mrodrig/deeks/test_coverage)
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=rodrigues.mi%40husky.neu.edu&item_name=Open+Source+Software+Development+-+Node+Modules&currency_code=USD&source=url)
 
 **Retrieve all keys and nested keys from objects and arrays of objects.**
 

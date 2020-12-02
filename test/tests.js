@@ -1,6 +1,6 @@
 'use strict';
 
-const deeks = require('../src/deeks.js'),
+const deeks = require('../lib/deeks.js'),
     /* eslint no-unused-vars: ["error", { "varsIgnorePattern": "should" }]*/
     should = require('should');
 
