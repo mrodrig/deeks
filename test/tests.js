@@ -114,6 +114,39 @@ describe('deeks Module', () => {
         });
 
         describe('Custom Options', () => {
+            it('[expandArrayObjects] options object should be passed to deepKeysFromList when processing an array', (done) => {
+                let testObj = {
+                        specifications: [
+                            { make: 'Nissan' },
+                            { model: 'GT-R' },
+                            { trim: 'NISMO' },
+                            { features: [
+                                {name: 'Air Conditioning',
+                                    notes: [
+                                        { note: 'Ice cold!' }
+                                    ]},
+                                {name: 'Heat',
+                                    notes: [
+                                        { note: 'Warmer than the sun!' }
+                                    ]}
+                            ]}
+                        ]
+                    },
+                    options = {
+                        expandArrayObjects: true
+                    },
+                    keys = deeks.deepKeys(testObj, options);
+
+                keys.should.be.an.instanceOf(Array)
+                    .and.containEql('specifications.make')
+                    .and.containEql('specifications.model')
+                    .and.containEql('specifications.trim')
+                    .and.containEql('specifications.features.name')
+                    .and.containEql('specifications.features.notes.note')
+                    .and.have.lengthOf(5);
+                done();
+            });
+
             it('[expandArrayObjects] should retrieve the keys for objects containing an empty array', (done) => {
                 let testObj = {
                         make: 'Nissan',
