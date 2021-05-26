@@ -111,6 +111,24 @@ describe('deeks Module', () => {
                     .and.have.lengthOf(4);
                 done();
             });
+
+            it('should not escape nested dots in key values when option not specified', (done) => {
+                let testObj = {
+                        'a.a': '2',
+                        'a.b': {
+                            c: '3',
+                            'c.d': '4'
+                        }
+                    },
+                    keys = deeks.deepKeys(testObj);
+
+                keys.should.be.an.instanceOf(Array)
+                    .and.containEql('a.a')
+                    .and.containEql('a.b.c')
+                    .and.containEql('a.b.c.d')
+                    .and.have.lengthOf(3);
+                done();
+            });
         });
 
         describe('Custom Options', () => {
@@ -310,6 +328,53 @@ describe('deeks Module', () => {
                     .and.have.lengthOf(4);
                 done();
             });
+
+            it('[escapeNestedDots] should not escape nested dots in key values when option not specified', (done) => {
+                let testObj = {
+                        'a.a': '2',
+                        'a.b': {
+                            c: '3',
+                            'c.d': '4'
+                        }
+                    },
+                    keys = deeks.deepKeys(testObj, {escapeNestedDots: true});
+
+                keys.should.be.an.instanceOf(Array)
+                    .and.containEql('a\\.a')
+                    .and.containEql('a\\.b.c')
+                    .and.containEql('a\\.b.c\\.d')
+                    .and.have.lengthOf(3);
+                done();
+            });
+
+            it('[expandArrayObjects, ignoreEmptyArraysWhenExpanding, escapeNestedDots] should retrieve the keys for objects containing an array of non-objects', (done) => {
+                let testObj = {
+                        make: 'Nissan',
+                        model: 'GT-R',
+                        'model.trim': 'NISMO',
+                        'features.exterior': ['Insane horsepower', 'Fast acceleration'],
+                        'oem.options': {
+                            'cost.total': '3200',
+                            'cost.minusRebates': '1295'
+                        }
+                    },
+                    options = {
+                        expandArrayObjects: true,
+                        ignoreEmptyArraysWhenExpanding: true,
+                        escapeNestedDots: true
+                    },
+                    keys = deeks.deepKeys(testObj, options);
+
+                keys.should.be.an.instanceOf(Array)
+                    .and.containEql('make')
+                    .and.containEql('model')
+                    .and.containEql('model\\.trim')
+                    .and.containEql('features\\.exterior')
+                    .and.containEql('oem\\.options.cost\\.total')
+                    .and.containEql('oem\\.options.cost\\.minusRebates')
+                    .and.have.lengthOf(6);
+                done();
+            });
         });
     });
 
@@ -498,6 +563,24 @@ describe('deeks Module', () => {
                     .and.have.lengthOf(1);
                 done();
             });
+
+            it('should not escape nested dots in key values when option not specified', (done) => {
+                let testList = [
+                        {
+                            'a.a': '2',
+                            'a.b': {
+                                c: '3',
+                                'c.d': '4'
+                            }
+                        }
+                    ],
+                    keys = deeks.deepKeysFromList(testList);
+
+                keys.should.be.an.instanceOf(Array)
+                    .and.containEql(['a.a', 'a.b.c', 'a.b.c.d'])
+                    .and.have.lengthOf(1);
+                done();
+            });
         });
 
         describe('Custom Options', () => {
@@ -661,6 +744,50 @@ describe('deeks Module', () => {
 
                 keys.should.be.an.instanceOf(Array)
                     .and.containEql(['make', 'model', 'trim', 'features'])
+                    .and.have.lengthOf(1);
+                done();
+            });
+
+            it('[escapeNestedDots] should not escape nested dots in key values when option not specified', (done) => {
+                let testList = [
+                        {
+                            'a.a': '2',
+                            'a.b': {
+                                c: '3',
+                                'c.d': '4'
+                            }
+                        }
+                    ],
+                    keys = deeks.deepKeysFromList(testList, {escapeNestedDots: true});
+
+                keys.should.be.an.instanceOf(Array)
+                    .and.containEql(['a\\.a', 'a\\.b.c', 'a\\.b.c\\.d'])
+                    .and.have.lengthOf(1);
+                done();
+            });
+
+            it('[expandArrayObjects, ignoreEmptyArraysWhenExpanding, escapeNestedDots] should retrieve keys for an array of one object with an array of non-objects', (done) => {
+                let testList = [
+                        {
+                            make: 'Nissan',
+                            model: 'GT-R',
+                            'model.trim': 'NISMO',
+                            'features.exterior': ['Insane horsepower', 'Fast acceleration'],
+                            'oem.options': {
+                                'cost.total': '3200',
+                                'cost.minusRebates': '1295'
+                            }
+                        }
+                    ],
+                    options = {
+                        expandArrayObjects: true,
+                        ignoreEmptyArraysWhenExpanding: true,
+                        escapeNestedDots: true
+                    },
+                    keys = deeks.deepKeysFromList(testList, options);
+
+                keys.should.be.an.instanceOf(Array)
+                    .and.containEql(['make', 'model', 'model\\.trim', 'features\\.exterior', 'oem\\.options.cost\\.total', 'oem\\.options.cost\\.minusRebates'])
                     .and.have.lengthOf(1);
                 done();
             });
