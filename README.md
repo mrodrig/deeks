@@ -89,6 +89,19 @@ included in the returned key path list?
 	```
 	- ignoreEmptyArraysWhenExpanding = `false` results in: `['features.name', 'rebates']`
 	- ignoreEmptyArraysWhenExpanding = `true` results in: `['features.name']`
+- escapeNestedDots - `Boolean` (Default: `false`) - Should `.` characters that appear in keys be escaped with a preceding `\` character.
+	- Example:
+	```json
+	{
+		"a.a": "1",
+		"a.b": {
+			"c": "2",
+			"c.d": "3"
+		}
+	}
+	```
+	- escapeNestedDots = `false` results in: `['a.a', 'a.b.c', 'a.b.c.d']`
+	- escapeNestedDots = `true` results in: `['a\\.a', 'a\\.b.c', 'a\\.b.c\\.d']`
 
 Returns: `Array[String]`
 
@@ -129,8 +142,23 @@ included in the returned key path list?
 		{ "features": [] }
 	] 
 	```
-	- ignoreEmptyArraysWhenExpanding = `false` results in: `['features.name', 'features']`
-	- ignoreEmptyArraysWhenExpanding = `true` results in: `['features.name']`
+	- ignoreEmptyArraysWhenExpanding = `false` results in: `[ ['features.name', 'features'] ]`
+	- ignoreEmptyArraysWhenExpanding = `true` results in: `[ ['features.name'] ]`
+- escapeNestedDots - `Boolean` (Default: `false`) - Should `.` characters that appear in keys be escaped with a preceding `\` character.
+	- Example:
+	```json
+	[
+		{
+			"a.a": "1",
+			"a.b": {
+				"c": "2",
+				"c.d": "3"
+			}
+		}
+	]
+	```
+	- escapeNestedDots = `false` results in: `[ ['a.a', 'a.b.c', 'a.b.c.d'] ]`
+	- escapeNestedDots = `true` results in: `[ ['a\\.a', 'a\\.b.c', 'a\\.b.c\\.d'] ]`
 
 Returns: `Array[Array[String]]`
 
@@ -141,6 +169,8 @@ Example: `[ ['make', 'model', 'specifications.odometer.miles', 'specifications.o
 This module integrates really nicely with the 
 [`doc-path`](https://github.com/mrodrig/doc-path) module, which allows
 the programmatic getting and setting of key paths produced by this module.
+
+Additionally, `doc-path@>=3` works with the keys returned when the `escapeNestedDots` option is specified.
 
 Here's an example of how this works:
 
@@ -181,8 +211,8 @@ $ npm run coverage
 
 Current Coverage is:
 ```
-Statements   : 100% ( 46/46 )
-Branches     : 100% ( 30/30 )
-Functions    : 100% ( 9/9 )
-Lines        : 100% ( 45/45 )
+Statements   : 100% ( 45/45 )
+Branches     : 100% ( 32/32 )
+Functions    : 100% ( 18/18 )
+Lines        : 100% ( 44/44 )
 ```
