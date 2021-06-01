@@ -89,7 +89,7 @@ included in the returned key path list?
 	```
 	- ignoreEmptyArraysWhenExpanding = `false` results in: `['features.name', 'rebates']`
 	- ignoreEmptyArraysWhenExpanding = `true` results in: `['features.name']`
-- escapeNestedDots - `Boolean` (Default: `false`) - Should `.` characters that appear in keys be escaped with a preceding `\` character.
+- escapeNestedDots - `Boolean` (Default: `false`) - Should `.` characters that appear in keys be escaped with a preceding `\` character?
 	- Example:
 	```json
 	{
@@ -102,6 +102,22 @@ included in the returned key path list?
 	```
 	- escapeNestedDots = `false` results in: `['a.a', 'a.b.c', 'a.b.c.d']`
 	- escapeNestedDots = `true` results in: `['a\\.a', 'a\\.b.c', 'a\\.b.c\\.d']`
+- ignoreEmptyArrays - `Boolean` (Default: `false`) - Should key paths for empty arrays be ignored in the generated key list?
+	- Example:
+	```json
+	{
+		"a": {
+			"b": [],
+			"c": {
+				"f": 4,
+				"e": []
+			}
+		},
+		"b": []
+	}
+	```
+	- ignoreEmptyArrays = `false` results in `['a.b', 'a.c.f', 'a.c.e', 'b']`
+	- ignoreEmptyArrays = `true` results in `['a.c.f']`
 
 Returns: `Array[String]`
 
@@ -159,6 +175,24 @@ included in the returned key path list?
 	```
 	- escapeNestedDots = `false` results in: `[ ['a.a', 'a.b.c', 'a.b.c.d'] ]`
 	- escapeNestedDots = `true` results in: `[ ['a\\.a', 'a\\.b.c', 'a\\.b.c\\.d'] ]`
+- ignoreEmptyArrays - `Boolean` (Default: `false`) - Should key paths for empty arrays be ignored in the generated key list?
+	- Example:
+	```json
+	[
+		{
+			"a": {
+				"b": [],
+				"c": {
+					"f": 4,
+					"e": []
+				}
+			},
+			"b": []
+		}
+	]
+	```
+	- ignoreEmptyArrays = `false` results in `[ ['a.b', 'a.c.f', 'a.c.e', 'b'] ]`
+	- ignoreEmptyArrays = `true` results in `[ ['a.c.f'] ]`
 
 Returns: `Array[Array[String]]`
 
@@ -211,8 +245,8 @@ $ npm run coverage
 
 Current Coverage is:
 ```
-Statements   : 100% ( 45/45 )
-Branches     : 100% ( 32/32 )
+Statements   : 100% ( 47/47 )
+Branches     : 100% ( 37/37 )
 Functions    : 100% ( 18/18 )
-Lines        : 100% ( 44/44 )
+Lines        : 100% ( 46/46 )
 ```
