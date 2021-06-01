@@ -129,6 +129,28 @@ describe('deeks Module', () => {
                     .and.have.lengthOf(3);
                 done();
             });
+
+            it('should include empty array key paths in the generated key list', (done) => {
+                let testObj = {
+                        a: {
+                            b: [],
+                            c: {
+                                f: 4,
+                                e: []
+                            }
+                        },
+                        b: []
+                    },
+                    keys = deeks.deepKeys(testObj);
+
+                keys.should.be.an.instanceOf(Array)
+                    .and.containEql('a.b')
+                    .and.containEql('a.c.f')
+                    .and.containEql('a.c.e')
+                    .and.containEql('b')
+                    .and.have.lengthOf(4);
+                done();
+            });
         });
 
         describe('Custom Options', () => {
@@ -375,6 +397,28 @@ describe('deeks Module', () => {
                     .and.have.lengthOf(6);
                 done();
             });
+
+            it('[ignoreEmptyArrays] should ignore empty arrays when generating key list and when specified', (done) => {
+                let testObj = {
+                        a: {
+                            b: [],
+                            c: {
+                                f: 4,
+                                e: []
+                            }
+                        },
+                        b: []
+                    },
+                    options = {
+                        ignoreEmptyArrays: true
+                    },
+                    keys = deeks.deepKeys(testObj, options);
+
+                keys.should.be.an.instanceOf(Array)
+                    .and.containEql('a.c.f')
+                    .and.have.lengthOf(1);
+                done();
+            });
         });
     });
 
@@ -578,6 +622,27 @@ describe('deeks Module', () => {
 
                 keys.should.be.an.instanceOf(Array)
                     .and.containEql(['a.a', 'a.b.c', 'a.b.c.d'])
+                    .and.have.lengthOf(1);
+                done();
+            });
+
+            it('should include empty array key paths in the generated key list', (done) => {
+                let testList = [
+                        {
+                            a: {
+                                b: [],
+                                c: {
+                                    f: 4,
+                                    e: []
+                                }
+                            },
+                            b: []
+                        }
+                    ],
+                    keys = deeks.deepKeysFromList(testList);
+
+                keys.should.be.an.instanceOf(Array)
+                    .and.containEql(['a.b', 'a.c.f', 'a.c.e', 'b'])
                     .and.have.lengthOf(1);
                 done();
             });
@@ -788,6 +853,30 @@ describe('deeks Module', () => {
 
                 keys.should.be.an.instanceOf(Array)
                     .and.containEql(['make', 'model', 'model\\.trim', 'features\\.exterior', 'oem\\.options.cost\\.total', 'oem\\.options.cost\\.minusRebates'])
+                    .and.have.lengthOf(1);
+                done();
+            });
+
+            it('[ignoreEmptyArrays] should not include empty array key paths in the generated key list when specified', (done) => {
+                let testList = [
+                        {
+                            a: {
+                                b: [],
+                                c: {
+                                    f: 4,
+                                    e: []
+                                }
+                            },
+                            b: []
+                        }
+                    ],
+                    options = {
+                        ignoreEmptyArrays: true
+                    },
+                    keys = deeks.deepKeysFromList(testList, options);
+
+                keys.should.be.an.instanceOf(Array)
+                    .and.containEql(['a.c.f'])
                     .and.have.lengthOf(1);
                 done();
             });
