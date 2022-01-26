@@ -6,14 +6,15 @@
     "mocha": true     // ignore mocha globals (describe, it)
   },
   "extends": "eslint:recommended",
-  "parser": "babel-eslint",
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module"
+    "ecmaVersion": 8,
+    "sourceType": "module",
+    "requireConfigFile": false
   },
   "rules": {
     //Overrides "eslint:recommended"
-    "no-console": ["error", { allow: ["warn", "error"] }], // allow use of console.warn and console.error
+    "no-console": ["error", { "allow": ["warn", "error"] }], // allow use of console.warn and console.error
 
     //Add the rules associated with --fix not covered by "eslint:recommended" so we highlight them
     //during pre-test script
