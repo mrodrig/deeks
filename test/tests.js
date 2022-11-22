@@ -7,6 +7,14 @@ const deeks = require('../lib/deeks.js'),
 describe('deeks Module', () => {
     describe('deepKeys() - Objects', () => {
         describe('Default Options', () => {
+            it('should retrieve no keys for null', (done) => {
+                let keys = deeks.deepKeys(null);
+
+                keys.should.be.an.instanceOf(Array)
+                    .and.have.lengthOf(0);
+                done();
+            });
+
             it('should retrieve no keys for an empty object', (done) => {
                 let testObj = {},
                     keys = deeks.deepKeys(testObj);
