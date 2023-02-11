@@ -1,5 +1,8 @@
-export declare function isObject(value: any): boolean;
-export declare function isNull(value: any): boolean;
-export declare function unique(array: any[]): any[];
-export declare function flatten(array: any[]): never[];
-export declare function isEmptyArray(val: any): boolean;
+export declare function unique(array: unknown[]): unknown[];
+export declare function flatten(array: unknown[]): never[];
+/**
+ * Returns whether this value is a document to recur on or not
+ * @param val Any item whose type will be evaluated
+ * @returns {boolean}
+ */
+export declare function isDocumentToRecurOn(val: unknown): number | false;
