@@ -1,6 +1,6 @@
-export type DeeksOptions = {
+export interface DeeksOptions {
     expandArrayObjects: boolean;
     ignoreEmptyArraysWhenExpanding: boolean;
     escapeNestedDots: boolean;
     ignoreEmptyArrays: boolean;
-};
+}
