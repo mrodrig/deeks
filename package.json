@@ -1,13 +1,16 @@
 {
   "name": "deeks",
-  "version": "2.6.0",
+  "version": "3.0.0-beta.0",
   "description": "Retrieve all keys and nested keys from objects and arrays of objects.",
   "main": "lib/deeks.js",
+  "types": "lib/deeks.d.ts",
   "scripts": {
-    "test": "mocha test/tests.js",
-    "coverage": "nyc --reporter=lcov --reporter=text-summary --reporter=text _mocha",
+    "build": "npm run lint && npm run test && npm run compile",
+    "compile": "tsc",
+    "coverage": "nyc npm run test",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "lint": "eslint lib test"
+    "lint": "eslint --ext .js,.ts src",
+    "test": "mocha -r ts-node/register src/test/index.ts"
   },
   "repository": {
     "type": "git",
@@ -28,16 +31,21 @@
     "url": "https://github.com/mrodrig/deeks/issues"
   },
   "homepage": "https://mrodrig.github.io/deeks",
-  "dependencies": {},
   "devDependencies": {
-    "@babel/eslint-parser": "7.16.5",
+    "@types/mocha": "10.0.1",
+    "@types/node": "18.13.0",
+    "@typescript-eslint/eslint-plugin": "5.51.0",
+    "@typescript-eslint/parser": "5.51.0",
     "coveralls": "3.1.1",
-    "eslint": "8.7.0",
-    "mocha": "10.1.0",
+    "eslint": "8.34.0",
+    "eslint-config-google": "0.14.0",
+    "eslint-plugin-import": "2.27.5",
+    "mocha": "10.2.0",
     "nyc": "15.1.0",
-    "should": "13.2.3"
+    "ts-node": "10.9.1",
+    "typescript": "4.9.5"
   },
   "engines": {
-    "node": ">= 12"
+    "node": ">= 14"
   }
 }

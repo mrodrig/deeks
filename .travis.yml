@@ -3,10 +3,11 @@ env:
     - CC_TEST_REPORTER_ID=6c017ab8f2c6f9c4283e1d07e82e8f408fe53bfe1b4a0442c607a8e489b21789
 language: node_js
 node_js:
+  - "19"
+  - "18"
   - "16"
   - "15"
   - "14"
-  - "12"
 sudo: false
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
