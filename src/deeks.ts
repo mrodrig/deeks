@@ -3,6 +3,8 @@
 import { DeeksOptions } from './types';
 import * as utils from './utils';
 
+export * from './types';
+
 /**
  * Return the deep keys list for a single document
  * @param object
