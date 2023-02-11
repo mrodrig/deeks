@@ -19,10 +19,11 @@ npm install --save deeks
 
 Example: 
 ```javascript
-let keys = require('deeks'),
-	docPath = require('doc-path');
+const { deepKeys } = require('deeks');
+// Alternatively:
+// import { deepKeys } from 'deeks';
 
-let generatedKeys = keys.deepKeys({
+let generatedKeys = deepKeys({
 	make: 'Nissan',
 	model: 'GT-R',
 	trim: 'NISMO',
@@ -35,18 +36,6 @@ let generatedKeys = keys.deepKeys({
     ignoreEmptyArraysWhenExpanding: true
 });
 // => ['make', 'model', 'trim', 'specifications.mileage', 'specifications.cylinders']
-
-generatedKeys.forEach((key) => 
-    console.log(
-        docPath.evaluatePath(key)
-    )
-)
-// Console Output:
-// Nissan
-// GT-R
-// NISMO
-// 10
-// 6
 ```
 
 ## API
