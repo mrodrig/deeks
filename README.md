@@ -223,17 +223,9 @@ for(let keyPath of carKeys) {
 $ npm test
 ```
 
-_Note_: This requires `mocha`, `should`, and `underscore`.
+_Note_: This requires `mocha`.
 
 To see test coverage, please run:
 ```bash
 $ npm run coverage
-```
-
-Current Coverage is:
-```
-Statements   : 100% ( 47/47 )
-Branches     : 100% ( 37/37 )
-Functions    : 100% ( 18/18 )
-Lines        : 100% ( 46/46 )
 ```
