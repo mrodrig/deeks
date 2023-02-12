@@ -10,6 +10,7 @@
     "coverage": "nyc npm run test",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint --ext .js,.ts src",
+    "prepublishOnly": "npm run build",
     "test": "mocha -r ts-node/register src/test/index.ts"
   },
   "repository": {
