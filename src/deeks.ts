@@ -11,7 +11,7 @@ export * from './types';
  * @param options
  * @returns {Array}
  */
-export function deepKeys(object: unknown, options?: unknown): string[] {
+export function deepKeys(object: object, options?: DeeksOptions): string[] {
     const parsedOptions = mergeOptions(options);
     if (typeof object === 'object' && object !== null) {
         return generateDeepKeysList('', object as Record<string, unknown>, parsedOptions);
@@ -25,10 +25,10 @@ export function deepKeys(object: unknown, options?: unknown): string[] {
  * @param options
  * @returns Array[Array[String]]
  */
-export function deepKeysFromList(list: unknown[], options?: unknown) {
+export function deepKeysFromList(list: object[], options?: DeeksOptions): string[][] {
     const parsedOptions = mergeOptions(options);
-    return list.map((document: unknown): string[] => { // for each document
-        if (typeof document === 'object') {
+    return list.map((document: object): string[] => { // for each document
+        if (typeof document === 'object' && document !== null) {
             // if the data at the key is a document, then we retrieve the subHeading starting with an empty string heading and the doc
             return deepKeys(document, parsedOptions);
         }
@@ -46,7 +46,7 @@ function generateDeepKeysList(heading: string, data: Record<string, unknown>, op
             return generateDeepKeysList(keyName, data[currentKey] as Record<string, unknown>, options);
         } else if (options.expandArrayObjects && Array.isArray(data[currentKey])) {
             // If we have a nested array that we need to recur on
-            return processArrayKeys(data[currentKey] as unknown[], keyName, options);
+            return processArrayKeys(data[currentKey] as object[], keyName, options);
         } else if (options.ignoreEmptyArrays && Array.isArray(data[currentKey]) && !(data[currentKey] as unknown[]).length) {
             return [];
         }
@@ -65,7 +65,7 @@ function generateDeepKeysList(heading: string, data: Record<string, unknown>, op
  * @param options
  * @returns {*}
  */
-function processArrayKeys(subArray: unknown[], currentKeyPath: string, options: DeeksOptions) {
+function processArrayKeys(subArray: object[], currentKeyPath: string, options: DeeksOptions) {
     let subArrayKeys = deepKeysFromList(subArray, options);
 
     if (!subArray.length) {
@@ -105,7 +105,7 @@ function buildKeyName(upperKeyName: string, currentKeyName: string) {
     return currentKeyName;
 }
 
-function mergeOptions(options: unknown): DeeksOptions {
+function mergeOptions(options: DeeksOptions | undefined): DeeksOptions {
     return {
         expandArrayObjects: false,
         ignoreEmptyArraysWhenExpanding: false,

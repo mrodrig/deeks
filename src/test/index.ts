@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { deepKeys, deepKeysFromList } from '../deeks';
 import assert from 'assert';
 
@@ -7,7 +9,7 @@ describe('deeks Module', () => {
     describe('deepKeys() - Objects', () => {
         describe('Default Options', () => {
             it('should retrieve no keys for null', (done) => {
-                const keys = deepKeys(null);
+                const keys = deepKeys(null as any);
 
                 assert.equal(Array.isArray(keys), true);
                 assert.equal(keys.length, 0);
@@ -24,7 +26,7 @@ describe('deeks Module', () => {
             });
 
             it('should retrieve no keys for a non-object', (done) => {
-                const testObj = 'testing',
+                const testObj = 'testing' as any,
                     keys = deepKeys(testObj);
 
                 assert.equal(Array.isArray(keys), true);
@@ -384,7 +386,7 @@ describe('deeks Module', () => {
     describe('deepKeysFromList() - List of Objects', () => {
         describe('Default Options', () => {
             it('should retrieve no keys for an empty array', (done) => {
-                const testList: unknown[] = [],
+                const testList: object[] = [],
                     keys = deepKeysFromList(testList);
 
                 assert.equal(Array.isArray(keys), true);
@@ -393,7 +395,7 @@ describe('deeks Module', () => {
             });
 
             it('should retrieve no keys for an array of a non-object', (done) => {
-                const testList = ['testing'],
+                const testList = ['testing'] as any,
                     keys = deepKeysFromList(testList);
 
                 assert.equal(Array.isArray(keys), true);
@@ -429,7 +431,7 @@ describe('deeks Module', () => {
                         { a: 1 },
                         'testing'
                     ],
-                    keys = deepKeysFromList(testList);
+                    keys = deepKeysFromList(testList as any);
 
                 assert.equal(Array.isArray(keys), true);
                 assert.equal(keys.length, 2);
