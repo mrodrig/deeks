@@ -1,8 +1,6 @@
 {
   "extends": "./tsconfig.common.json",
   "include": [
-    "src",
-    "test",
-    ".eslintrc.js"
+    "src"
   ]
 }

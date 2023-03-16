@@ -2,7 +2,7 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { deepKeys, deepKeysFromList } from '../deeks';
+import { deepKeys, deepKeysFromList } from '../src/deeks';
 import assert from 'assert';
 
 describe('deeks Module', () => {

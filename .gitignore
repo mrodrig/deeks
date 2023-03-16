@@ -4,3 +4,4 @@ node_modules
 coverage
 .nyc-output
 .nyc_output/*
+lib

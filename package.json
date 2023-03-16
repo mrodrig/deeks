@@ -6,12 +6,12 @@
   "types": "lib/deeks.d.ts",
   "scripts": {
     "build": "npm run lint && npm run test && npm run compile",
-    "compile": "tsc",
+    "compile": "tsc -p tsconfig.build.json",
     "coverage": "nyc npm run test",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "lint": "eslint --ext .js,.ts src",
     "prepublishOnly": "npm run build",
-    "test": "mocha -r ts-node/register src/test/index.ts"
+    "test": "mocha -r ts-node/register test/index.ts"
   },
   "repository": {
     "type": "git",
