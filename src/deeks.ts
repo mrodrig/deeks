@@ -1,11 +1,9 @@
 'use strict';
 
-const utils = require('./utils.js');
+import { DeeksOptions } from './types';
+import * as utils from './utils';
 
-module.exports = {
-    deepKeys: deepKeys,
-    deepKeysFromList: deepKeysFromList
-};
+export * from './types';
 
 /**
  * Return the deep keys list for a single document
@@ -13,10 +11,10 @@ module.exports = {
  * @param options
  * @returns {Array}
  */
-function deepKeys(object, options) {
-    options = mergeOptions(options);
-    if (utils.isObject(object) && object !== null) {
-        return generateDeepKeysList('', object, options);
+export function deepKeys(object: object, options?: DeeksOptions): string[] {
+    const parsedOptions = mergeOptions(options);
+    if (typeof object === 'object' && object !== null) {
+        return generateDeepKeysList('', object as Record<string, unknown>, parsedOptions);
     }
     return [];
 }
@@ -27,29 +25,29 @@ function deepKeys(object, options) {
  * @param options
  * @returns Array[Array[String]]
  */
-function deepKeysFromList(list, options) {
-    options = mergeOptions(options);
-    return list.map((document) => { // for each document
-        if (utils.isObject(document)) {
+export function deepKeysFromList(list: object[], options?: DeeksOptions): string[][] {
+    const parsedOptions = mergeOptions(options);
+    return list.map((document: object): string[] => { // for each document
+        if (typeof document === 'object' && document !== null) {
             // if the data at the key is a document, then we retrieve the subHeading starting with an empty string heading and the doc
-            return deepKeys(document, options);
+            return deepKeys(document, parsedOptions);
         }
         return [];
     });
 }
 
-function generateDeepKeysList(heading, data, options) {
-    let keys = Object.keys(data).map((currentKey) => {
+function generateDeepKeysList(heading: string, data: Record<string, unknown>, options: DeeksOptions): string[] {
+    const keys = Object.keys(data).map((currentKey: string) => {
         // If the given heading is empty, then we set the heading to be the subKey, otherwise set it as a nested heading w/ a dot
-        let keyName = buildKeyName(heading, escapeNestedDotsIfSpecified(currentKey, options));
+        const keyName = buildKeyName(heading, escapeNestedDotsIfSpecified(currentKey, options));
 
         // If we have another nested document, recur on the sub-document to retrieve the full key name
-        if (isDocumentToRecurOn(data[currentKey])) {
-            return generateDeepKeysList(keyName, data[currentKey], options);
-        } else if (options.expandArrayObjects && isArrayToRecurOn(data[currentKey])) {
+        if (utils.isDocumentToRecurOn(data[currentKey])) {
+            return generateDeepKeysList(keyName, data[currentKey] as Record<string, unknown>, options);
+        } else if (options.expandArrayObjects && Array.isArray(data[currentKey])) {
             // If we have a nested array that we need to recur on
-            return processArrayKeys(data[currentKey], keyName, options);
-        } else if (options.ignoreEmptyArrays && isArrayToRecurOn(data[currentKey]) && !data[currentKey].length) {
+            return processArrayKeys(data[currentKey] as object[], keyName, options);
+        } else if (options.ignoreEmptyArrays && Array.isArray(data[currentKey]) && !(data[currentKey] as unknown[]).length) {
             return [];
         }
         // Otherwise return this key name since we don't have a sub document
@@ -67,7 +65,7 @@ function generateDeepKeysList(heading, data, options) {
  * @param options
  * @returns {*}
  */
-function processArrayKeys(subArray, currentKeyPath, options) {
+function processArrayKeys(subArray: object[], currentKeyPath: string, options: DeeksOptions) {
     let subArrayKeys = deepKeysFromList(subArray, options);
 
     if (!subArray.length) {
@@ -77,7 +75,7 @@ function processArrayKeys(subArray, currentKeyPath, options) {
         return [currentKeyPath];
     } else {
         subArrayKeys = subArrayKeys.map((schemaKeys) => {
-            if (isEmptyArray(schemaKeys)) {
+            if (Array.isArray(schemaKeys) && schemaKeys.length === 0) {
                 return [currentKeyPath];
             }
             return schemaKeys.map((subKey) => buildKeyName(currentKeyPath, escapeNestedDotsIfSpecified(subKey, options)));
@@ -87,7 +85,7 @@ function processArrayKeys(subArray, currentKeyPath, options) {
     }
 }
 
-function escapeNestedDotsIfSpecified(key, options) {
+function escapeNestedDotsIfSpecified(key: string, options: DeeksOptions) {
     if (options.escapeNestedDots) {
         return key.replace(/\./g, '\\.');
     }
@@ -100,46 +98,19 @@ function escapeNestedDotsIfSpecified(key, options) {
  * @param currentKeyName String current key name
  * @returns String
  */
-function buildKeyName(upperKeyName, currentKeyName) {
+function buildKeyName(upperKeyName: string, currentKeyName: string) {
     if (upperKeyName) {
         return upperKeyName + '.' + currentKeyName;
     }
     return currentKeyName;
 }
 
-/**
- * Returns whether this value is a document to recur on or not
- * @param val Any item whose type will be evaluated
- * @returns {boolean}
- */
-function isDocumentToRecurOn(val) {
-    return utils.isObject(val) && !utils.isNull(val) && !Array.isArray(val) && Object.keys(val).length;
-}
-
-/**
- * Returns whether this value is an array to recur on or not
- * @param val Any item whose type will be evaluated
- * @returns {boolean}
- */
-function isArrayToRecurOn(val) {
-    return Array.isArray(val);
-}
-
-/**
- * Helper function that determines whether or not a value is an empty array
- * @param val
- * @returns {boolean}
- */
-function isEmptyArray(val) {
-    return Array.isArray(val) && !val.length;
-}
-
-function mergeOptions(options) {
+function mergeOptions(options: DeeksOptions | undefined): DeeksOptions {
     return {
         expandArrayObjects: false,
         ignoreEmptyArraysWhenExpanding: false,
         escapeNestedDots: false,
         ignoreEmptyArrays: false,
-        ...options || {}
+        ...(options ?? {})
     };
 }

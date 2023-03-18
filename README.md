@@ -1,13 +1,11 @@
 # deeks - Deep Object Key Extraction
 
-[![Dependencies](https://img.shields.io/david/mrodrig/deeks.svg)](https://www.npmjs.org/package/deeks)
-[![Downloads](http://img.shields.io/npm/dm/deeks.svg)](https://www.npmjs.org/package/deeks)
 [![NPM version](https://img.shields.io/npm/v/deeks.svg)](https://www.npmjs.org/package/deeks)
-[![Minzipped Size](https://flat.badgen.net/bundlephobia/minzip/deeks)](https://bundlephobia.com/result?p=deeks)
-
-[![Build Status](https://travis-ci.org/mrodrig/deeks.svg?branch=master)](https://travis-ci.org/mrodrig/deeks)
+[![Downloads](https://img.shields.io/npm/dm/deeks)](https://www.npmjs.org/package/deeks)
+[![Minzipped Size](https://img.shields.io/bundlephobia/minzip/deeks)](https://bundlephobia.com/result?p=deeks)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/mrodrig/deeks/automated-tests-workflow.yml)](https://github.com/mrodrig/deeks/actions/workflows/automated-tests-workflow.yml)
 [![Coverage Status](https://coveralls.io/repos/github/mrodrig/deeks/badge.svg?branch=stable)](https://coveralls.io/github/mrodrig/deeks?branch=stable)
-[![Maintainability](https://api.codeclimate.com/v1/badges/830bc7f29f61466986ac/maintainability)](https://codeclimate.com/github/mrodrig/deeks/maintainability)
+[![Typings](https://img.shields.io/npm/types/deeks)](https://www.npmjs.org/package/deeks)
 
 **Retrieve all keys and nested keys from objects and arrays of objects.**
 
@@ -19,10 +17,11 @@ npm install --save deeks
 
 Example: 
 ```javascript
-let keys = require('deeks'),
-	docPath = require('doc-path');
+const { deepKeys } = require('deeks');
+// Alternatively:
+// import { deepKeys } from 'deeks';
 
-let generatedKeys = keys.deepKeys({
+let generatedKeys = deepKeys({
 	make: 'Nissan',
 	model: 'GT-R',
 	trim: 'NISMO',
@@ -35,25 +34,13 @@ let generatedKeys = keys.deepKeys({
     ignoreEmptyArraysWhenExpanding: true
 });
 // => ['make', 'model', 'trim', 'specifications.mileage', 'specifications.cylinders']
-
-generatedKeys.forEach((key) => 
-    console.log(
-        docPath.evaluatePath(key)
-    )
-)
-// Console Output:
-// Nissan
-// GT-R
-// NISMO
-// 10
-// 6
 ```
 
 ## API
 
-### deepKeys(object) 
+### deepKeys 
 
-`keys.deepKeys(object, options)`
+`deepKeys(object, options)`
 
 Returns all keys in an object, even if they're nested several layers deep. 
 The array of keys that is returned can then be used with the 
@@ -119,13 +106,13 @@ included in the returned key path list?
 	- ignoreEmptyArrays = `false` results in `['a.b', 'a.c.f', 'a.c.e', 'b']`
 	- ignoreEmptyArrays = `true` results in `['a.c.f']`
 
-Returns: `Array[String]`
+Returns: `Array<String>`
 
 Example: `['make', 'model', 'specifications.odometer.miles', 'specifications.odometer.kilometers']`
 
-### deepKeysFromList(array) 
+### deepKeysFromList
 
-`keys.deepKeysFromList(array)`
+`deepKeysFromList(array, options)`
 
 Returns all keys in each object in the array, even if the keys are nested 
 several layers deep in each of the documents. These can also be used with the 
@@ -194,7 +181,7 @@ included in the returned key path list?
 	- ignoreEmptyArrays = `false` results in `[ ['a.b', 'a.c.f', 'a.c.e', 'b'] ]`
 	- ignoreEmptyArrays = `true` results in `[ ['a.c.f'] ]`
 
-Returns: `Array[Array[String]]`
+Returns: `Array<Array<String>>`
 
 Example: `[ ['make', 'model', 'specifications.odometer.miles', 'specifications.odometer.kilometers'] ]`
 
@@ -210,7 +197,7 @@ Here's an example of how this works:
 
 ```javascript
 const path = require('doc-path'),
-      keys = require('deeks');
+      { deepKeys } = require('deeks');
 
 let car = {
 		make: 'Nissan',
@@ -222,7 +209,7 @@ let car = {
 		}
 	},
 	
-	carKeys = keys.deepKeys(car);
+	carKeys = deepKeys(car);
 
 for(let keyPath of carKeys) {
     // Clear all values
@@ -236,17 +223,9 @@ for(let keyPath of carKeys) {
 $ npm test
 ```
 
-_Note_: This requires `mocha`, `should`, and `underscore`.
+_Note_: This requires `mocha`.
 
 To see test coverage, please run:
 ```bash
 $ npm run coverage
-```
-
-Current Coverage is:
-```
-Statements   : 100% ( 47/47 )
-Branches     : 100% ( 37/37 )
-Functions    : 100% ( 18/18 )
-Lines        : 100% ( 46/46 )
 ```
