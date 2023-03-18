@@ -3,6 +3,7 @@ npm-debug.log
 
 # Uncompiled Source Files
 src
+test
 
 # Node Modules
 node_modules/
