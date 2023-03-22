@@ -4,7 +4,7 @@
 [![Downloads](https://img.shields.io/npm/dm/deeks)](https://www.npmjs.org/package/deeks)
 [![Minzipped Size](https://img.shields.io/bundlephobia/minzip/deeks)](https://bundlephobia.com/result?p=deeks)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/mrodrig/deeks/automated-tests-workflow.yml)](https://github.com/mrodrig/deeks/actions/workflows/automated-tests-workflow.yml)
-[![Coverage Status](https://coveralls.io/repos/github/mrodrig/deeks/badge.svg?branch=stable)](https://coveralls.io/github/mrodrig/deeks?branch=stable)
+[![Coverage Status](https://coveralls.io/repos/github/mrodrig/deeks/badge.svg?branch=main)](https://coveralls.io/github/mrodrig/deeks?branch=main)
 [![Typings](https://img.shields.io/npm/types/deeks)](https://www.npmjs.org/package/deeks)
 
 **Retrieve all keys and nested keys from objects and arrays of objects.**
