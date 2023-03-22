@@ -106,7 +106,7 @@ included in the returned key path list?
 	- ignoreEmptyArrays = `false` results in `['a.b', 'a.c.f', 'a.c.e', 'b']`
 	- ignoreEmptyArrays = `true` results in `['a.c.f']`
 
-Returns: `Array<String>`
+Returns: `string[]`
 
 Example: `['make', 'model', 'specifications.odometer.miles', 'specifications.odometer.kilometers']`
 
@@ -181,7 +181,7 @@ included in the returned key path list?
 	- ignoreEmptyArrays = `false` results in `[ ['a.b', 'a.c.f', 'a.c.e', 'b'] ]`
 	- ignoreEmptyArrays = `true` results in `[ ['a.c.f'] ]`
 
-Returns: `Array<Array<String>>`
+Returns: `string[][]`
 
 Example: `[ ['make', 'model', 'specifications.odometer.miles', 'specifications.odometer.kilometers'] ]`
 
