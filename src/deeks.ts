@@ -42,7 +42,7 @@ function generateDeepKeysList(heading: string, data: Record<string, unknown>, op
         const keyName = buildKeyName(heading, escapeNestedDotsIfSpecified(currentKey, options));
 
         // If we have another nested document, recur on the sub-document to retrieve the full key name
-        if (utils.isDocumentToRecurOn(data[currentKey])) {
+        if (options.expandNestedObjects && utils.isDocumentToRecurOn(data[currentKey])) {
             return generateDeepKeysList(keyName, data[currentKey] as Record<string, unknown>, options);
         } else if (options.expandArrayObjects && Array.isArray(data[currentKey])) {
             // If we have a nested array that we need to recur on
@@ -107,6 +107,7 @@ function buildKeyName(upperKeyName: string, currentKeyName: string) {
 
 function mergeOptions(options: DeeksOptions | undefined): DeeksOptions {
     return {
+        expandNestedObjects: true,
         expandArrayObjects: false,
         ignoreEmptyArraysWhenExpanding: false,
         escapeNestedDots: false,
