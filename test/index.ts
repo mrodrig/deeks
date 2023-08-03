@@ -150,6 +150,27 @@ describe('deeks Module', () => {
         });
 
         describe('Custom Options', () => {
+            it('[expandNestedObjects] should not expand when not desired', (done) => {
+                const testObj = {
+                        Make: 'Nissan',
+                        Model: 'Murano',
+                        Year: '2013',
+                        Specifications: {
+                            Mileage: '7106',
+                            Trim: 'S AWD'
+                        }
+                    },
+                    options = {
+                        expandNestedObjects: false
+                    },
+                    keys = deepKeys(testObj, options);
+
+                assert.equal(Array.isArray(keys), true);
+                assert.equal(keys.length, 4);
+                assert.deepEqual(keys, ['Make', 'Model', 'Year', 'Specifications']);
+                done();
+            });
+
             it('[expandArrayObjects] options object should be passed to deepKeysFromList when processing an array', (done) => {
                 const testObj = {
                         specifications: [
@@ -608,6 +629,29 @@ describe('deeks Module', () => {
         });
 
         describe('Custom Options', () => {
+            it('[expandNestedObjects] should not expand when not desired', (done) => {
+                const testObj = [
+                        {
+                            Make: 'Nissan',
+                            Model: 'Murano',
+                            Year: '2013',
+                            Specifications: {
+                                Mileage: '7106',
+                                Trim: 'S AWD'
+                            }
+                        }
+                    ],
+                    options = {
+                        expandNestedObjects: false
+                    },
+                    keys = deepKeysFromList(testObj, options);
+
+                assert.equal(Array.isArray(keys), true);
+                assert.equal(keys.length, 1);
+                assert.deepEqual(keys, [ ['Make', 'Model', 'Year', 'Specifications'] ]);
+                done();
+            });
+
             it('[expandArrayObjects] should retrieve keys for an array of one object with an empty array', (done) => {
                 const testList = [
                         {

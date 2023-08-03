@@ -48,6 +48,21 @@ The array of keys that is returned can then be used with the
 at a specific key path.
 
 Options (optional):
+- expandNestedObjects - `Boolean` (Default: `true`) - Should nested objects appearing in the provided object also be expanded, such asthat keys appearing in those objects are extracted and included in the returned key path list?
+	- Example:
+	```json
+	{
+		"make": "Nissan",
+		"model": "Murano",
+		"year": 2013,
+		"specifications": {
+			"mileage": 7106,
+			"trim": "S AWD"
+		}
+	}
+	```
+	- expandNestedObjects = `false` results in: `['make', 'model', 'year', 'specifications']`
+	- expandNestedObjects = `true` results in: `['make', 'model', 'year', 'specifications.mileage', 'specifications.trim']`
 - expandArrayObjects - `Boolean` (Default: `false`) - Should objects appearing in arrays in the provided 
 object also be expanded, such that keys appearing in those objects are extracted and 
 included in the returned key path list?
@@ -119,6 +134,21 @@ several layers deep in each of the documents. These can also be used with the
 [`doc-path`](https://github.com/mrodrig/doc-path) module.
 
 Options (optional):
+- expandNestedObjects - `Boolean` (Default: `true`) - Should nested objects appearing in the provided object also be expanded, such asthat keys appearing in those objects are extracted and included in the returned key path list?
+	- Example:
+	```json
+	{
+		"make": "Nissan",
+		"model": "Murano",
+		"year": 2013,
+		"specifications": {
+			"mileage": 7106,
+			"trim": "S AWD"
+		}
+	}
+	```
+	- expandNestedObjects = `false` results in: `['make', 'model', 'year', 'specifications']`
+	- expandNestedObjects = `true` results in: `['make', 'model', 'year', 'specifications.mileage', 'specifications.trim']`
 - expandArrayObjects - `Boolean` (Default: `false`) - Should objects appearing in arrays in the provided 
 object also be expanded, such that keys appearing in those objects are extracted and 
 included in the returned key path list?
