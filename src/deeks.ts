@@ -41,15 +41,22 @@ function generateDeepKeysList(heading: string, data: Record<string, unknown>, op
         // If the given heading is empty, then we set the heading to be the subKey, otherwise set it as a nested heading w/ a dot
         const keyName = buildKeyName(heading, escapeNestedDotsIfSpecified(currentKey, options));
 
+        console.log(`keyName=${keyName}\theading=${heading}\tcurrentKey=${currentKey}`);
+
         // If we have another nested document, recur on the sub-document to retrieve the full key name
-        if (options.expandNestedObjects && utils.isDocumentToRecurOn(data[currentKey])) {
+        if (options.expandNestedObjects && utils.isDocumentToRecurOn(data[currentKey]) || (options.arrayIndexesAsKeys && Array.isArray(data[currentKey]) && (data[currentKey] as any).length)) {
+            console.log('  case 1');
             return generateDeepKeysList(keyName, data[currentKey] as Record<string, unknown>, options);
         } else if (options.expandArrayObjects && Array.isArray(data[currentKey])) {
+            console.log('  case 2');
+            console.log('    Object.keys', Object.keys(data[currentKey] as any));
             // If we have a nested array that we need to recur on
             return processArrayKeys(data[currentKey] as object[], keyName, options);
         } else if (options.ignoreEmptyArrays && Array.isArray(data[currentKey]) && !(data[currentKey] as unknown[]).length) {
+            console.log('  case 3');
             return [];
         }
+        console.log('  default');
         // Otherwise return this key name since we don't have a sub document
         return keyName;
     });
@@ -107,6 +114,7 @@ function buildKeyName(upperKeyName: string, currentKeyName: string) {
 
 function mergeOptions(options: DeeksOptions | undefined): DeeksOptions {
     return {
+        arrayIndexesAsKeys: false,
         expandNestedObjects: true,
         expandArrayObjects: false,
         ignoreEmptyArraysWhenExpanding: false,
