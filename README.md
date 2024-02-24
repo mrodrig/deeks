@@ -48,6 +48,24 @@ The array of keys that is returned can then be used with the
 at a specific key path.
 
 Options (optional):
+- arrayIndexesAsKeys - `Boolean` (Default `false`) - Should array indexes be used as keys in the generated path?
+	- Example:
+	```json
+	[
+		{
+			"list": [
+				{
+					"a": 1
+				},
+				{
+					"a": 2
+				}
+			]
+		}
+	]
+	```
+	- arrayIndexesAsKeys = `false` results in: `['list.a']`
+	- arrayIndexesAsKeys = `true` results in: `['list.0.a', 'list.1.a']`
 - expandNestedObjects - `Boolean` (Default: `true`) - Should nested objects appearing in the provided object also be expanded, such asthat keys appearing in those objects are extracted and included in the returned key path list?
 	- Example:
 	```json
