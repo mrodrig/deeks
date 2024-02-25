@@ -401,6 +401,25 @@ describe('deeks Module', () => {
                 assert.deepEqual(keys, ['a.c.f']);
                 done();
             });
+
+            it('[arrayIndexesAsKeys] should properly use array indexes as keys when specified', (done) => {
+                const testObj = {
+                        list: [{
+                            a: 1
+                        }, {
+                            a: 2
+                        }]
+                    },
+                    options = {
+                        arrayIndexesAsKeys: true
+                    },
+                    keys = deepKeys(testObj, options);
+
+                assert.equal(Array.isArray(keys), true);
+                assert.equal(keys.length, 2);
+                assert.deepEqual(keys, ['list.0.a', 'list.1.a']);
+                done();
+            });
         });
     });
 
@@ -881,6 +900,25 @@ describe('deeks Module', () => {
                 assert.equal(Array.isArray(keys), true);
                 assert.equal(keys.length, 1);
                 assert.deepEqual(keys, [ ['a.c.f'] ]);
+                done();
+            });
+
+            it('[arrayIndexesAsKeys] should properly use array indexes as keys when specified', (done) => {
+                const testList = [{
+                        list: [{
+                            a: 1
+                        }, {
+                            a: 2
+                        }]
+                    }],
+                    options = {
+                        arrayIndexesAsKeys: true
+                    },
+                    keys = deepKeysFromList(testList, options);
+
+                assert.equal(Array.isArray(keys), true);
+                assert.equal(keys.length, 1);
+                assert.deepEqual(keys, [ ['list.0.a', 'list.1.a'] ]);
                 done();
             });
         });

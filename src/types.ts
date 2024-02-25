@@ -1,6 +1,9 @@
 'use strict';
 
 export interface DeeksOptions {
+    /** @default false */
+    arrayIndexesAsKeys?: boolean,
+
     /** @default true */
     expandNestedObjects?: boolean,
 
