@@ -50,7 +50,7 @@ function generateDeepKeysList(heading: string, data: Record<string, unknown>, op
 
     // Iterative recursion simulation using an explicit stack of frames so we preserve
     // left-to-right processing order (matching the recursive implementation).
-    type Frame = { obj: Record<string, unknown>; keys: string[]; i: number; basePath: string };
+    interface Frame { obj: Record<string, unknown>; keys: string[]; i: number; basePath: string }
     const rootKeys = Object.keys(data);
     // mark root as visited to match recursive entry behavior
     visited.add(data as unknown as object);
