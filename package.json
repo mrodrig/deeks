@@ -10,7 +10,7 @@
     "coverage": "nyc npm run test",
     "lint": "eslint --ext .js,.ts src test",
     "prepublishOnly": "npm run build",
-    "test": "mocha -r ts-node/register test/index.ts"
+    "test": "mocha -r ts-node/register test/index.ts test/deepCircular.spec.ts"
   },
   "repository": {
     "type": "git",

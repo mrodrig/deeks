@@ -13,8 +13,10 @@ export * from './types';
  */
 export function deepKeys(object: object, options?: DeeksOptions): string[] {
     const parsedOptions = mergeOptions(options);
+    const visited = new WeakSet<object>();
+
     if (typeof object === 'object' && object !== null) {
-        return generateDeepKeysList('', object as Record<string, unknown>, parsedOptions);
+        return generateDeepKeysList('', object as Record<string, unknown>, parsedOptions, visited);
     }
     return [];
 }
@@ -25,36 +27,92 @@ export function deepKeys(object: object, options?: DeeksOptions): string[] {
  * @param options
  * @returns Array[Array[String]]
  */
-export function deepKeysFromList(list: object[], options?: DeeksOptions): string[][] {
+export function deepKeysFromList(list: object[], options?: DeeksOptions, visited?: WeakSet<object>): string[][] {
     const parsedOptions = mergeOptions(options);
+    const localVisited = visited ?? new WeakSet<object>();
+
     return list.map((document: object): string[] => { // for each document
         if (typeof document === 'object' && document !== null) {
+            // avoid re-traversing objects we've already seen (circular refs)
+            if (localVisited.has(document)) {
+                return [];
+            }
+
             // if the data at the key is a document, then we retrieve the subHeading starting with an empty string heading and the doc
-            return deepKeys(document, parsedOptions);
+            return generateDeepKeysList('', document as Record<string, unknown>, parsedOptions, localVisited);
         }
         return [];
     });
 }
 
-function generateDeepKeysList(heading: string, data: Record<string, unknown>, options: DeeksOptions): string[] {
-    const keys = Object.keys(data).map((currentKey: string) => {
-        // If the given heading is empty, then we set the heading to be the subKey, otherwise set it as a nested heading w/ a dot
-        const keyName = buildKeyName(heading, escapeNestedDotsIfSpecified(currentKey, options));
+function generateDeepKeysList(heading: string, data: Record<string, unknown>, options: DeeksOptions, visited: WeakSet<object>): string[] {
+    const result: string[] = [];
 
-        // If we have another nested document, recur on the sub-document to retrieve the full key name
-        if (options.expandNestedObjects && utils.isDocumentToRecurOn(data[currentKey]) || (options.arrayIndexesAsKeys && Array.isArray(data[currentKey]) && (data[currentKey] as unknown[]).length)) {
-            return generateDeepKeysList(keyName, data[currentKey] as Record<string, unknown>, options);
-        } else if (options.expandArrayObjects && Array.isArray(data[currentKey])) {
-            // If we have a nested array that we need to recur on
-            return processArrayKeys(data[currentKey] as object[], keyName, options);
-        } else if (options.ignoreEmptyArrays && Array.isArray(data[currentKey]) && !(data[currentKey] as unknown[]).length) {
-            return [];
+    // Iterative recursion simulation using an explicit stack of frames so we preserve
+    // left-to-right processing order (matching the recursive implementation).
+    type Frame = { obj: Record<string, unknown>; keys: string[]; i: number; basePath: string };
+    const rootKeys = Object.keys(data);
+    // mark root as visited to match recursive entry behavior
+    visited.add(data as unknown as object);
+    const stack: Frame[] = [{ obj: data, keys: rootKeys, i: 0, basePath: heading }];
+
+    while (stack.length) {
+        const frame = stack[stack.length - 1];
+
+        if (frame.i >= frame.keys.length) {
+            // finished this object
+            stack.pop();
+            continue;
         }
-        // Otherwise return this key name since we don't have a sub document
-        return keyName;
-    });
 
-    return utils.flatten(keys);
+        const currentKey = frame.keys[frame.i++];
+        const value = frame.obj[currentKey];
+        const keyName = buildKeyName(frame.basePath, escapeNestedDotsIfSpecified(currentKey, options));
+
+        // If nested document or array-as-object via arrayIndexesAsKeys, descend (push new frame)
+        if ((options.expandNestedObjects && utils.isDocumentToRecurOn(value)) || (options.arrayIndexesAsKeys && Array.isArray(value) && (value as unknown[]).length)) {
+            if (options.arrayIndexesAsKeys && Array.isArray(value)) {
+                // treat array like an object with numeric keys
+                const arr = value as unknown[];
+                // push frames in reverse so they are processed in increasing index order
+                for (let idx = arr.length - 1; idx >= 0; idx--) {
+                    const elem = arr[idx];
+                    const elemPath = buildKeyName(keyName, String(idx));
+                    if (typeof elem === 'object' && elem !== null && !Array.isArray(elem)) {
+                        if (!visited.has(elem as unknown as object)) {
+                            visited.add(elem as unknown as object);
+                            stack.push({ obj: elem as Record<string, unknown>, keys: Object.keys(elem as Record<string, unknown>), i: 0, basePath: elemPath });
+                        }
+                    } else {
+                        // non-object -> behave like leaf (original recursion would have produced the index path)
+                        result.push(elemPath);
+                    }
+                }
+            } else {
+                // value is an object -> push its frame (if not visited)
+                if (!visited.has(value as unknown as object)) {
+                    visited.add(value as unknown as object);
+                    stack.push({ obj: value as Record<string, unknown>, keys: Object.keys(value as Record<string, unknown>), i: 0, basePath: keyName });
+                }
+            }
+        } else if (options.expandArrayObjects && Array.isArray(value)) {
+            // call helper and append its results in order
+            const subKeys = processArrayKeys(value as object[], keyName, options, visited);
+            if (Array.isArray(subKeys)) {
+                for (const k of subKeys) {
+                    result.push(k as string);
+                }
+            }
+        } else if (options.ignoreEmptyArrays && Array.isArray(value) && !(value as unknown[]).length) {
+            // skip
+            continue;
+        } else {
+            // leaf key
+            result.push(keyName);
+        }
+    }
+
+    return utils.unique(result) as string[];
 }
 
 /**
@@ -65,8 +123,8 @@ function generateDeepKeysList(heading: string, data: Record<string, unknown>, op
  * @param options
  * @returns {*}
  */
-function processArrayKeys(subArray: object[], currentKeyPath: string, options: DeeksOptions) {
-    let subArrayKeys = deepKeysFromList(subArray, options);
+function processArrayKeys(subArray: object[], currentKeyPath: string, options: DeeksOptions, visited: WeakSet<object>) {
+    let subArrayKeys = deepKeysFromList(subArray, options, visited);
 
     if (!subArray.length) {
         return options.ignoreEmptyArraysWhenExpanding ? [] : [currentKeyPath];
