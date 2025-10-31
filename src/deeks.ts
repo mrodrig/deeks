@@ -97,11 +97,9 @@ function generateDeepKeysList(heading: string, data: Record<string, unknown>, op
             }
         } else if (options.expandArrayObjects && Array.isArray(value)) {
             // call helper and append its results in order
-            const subKeys = processArrayKeys(value as object[], keyName, options, visited);
-            if (Array.isArray(subKeys)) {
-                for (const k of subKeys) {
-                    result.push(k as string);
-                }
+            const subKeys = processArrayKeys(value as object[], keyName, options, visited) as string[];
+            for (const k of subKeys) {
+                result.push(k as string);
             }
         } else if (options.ignoreEmptyArrays && Array.isArray(value) && !(value as unknown[]).length) {
             // skip
