@@ -1,3 +1,5 @@
+# Exclude manual test files from published package
+test/manual/
 # Debug Logs
 npm-debug.log
 
